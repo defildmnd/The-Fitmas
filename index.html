@@ -1,730 +1,832 @@
-
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Typing Practice — Adaptive ( Coins & Levels)</title>
+  <title>Fitness Adventskalender – 24 Türchen</title>
+
+  <!-- Festliche Google-Fonts (optional, funktioniert auch ohne Internet mit Fallback) -->
+  https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@400;700;900&display=swap
 
   <style>
     :root{
-      --bg:#f6f8fb; 
-      --card:#ffffff; 
-      --accent:#1976d2; 
-      --muted:#6b7280;
-      --border:#e6e9ef;
-      --text:#111111;
+      --bg: #0b1b2a;
+      --snow: #dff4ff;
+      --cream: #fff8e1;
+      --red: #c62828;
+      --green:#2e7d32;
+      --gold:#f5d15f;
+      --dark: #0a1824;
+      --card: #123047;
     }
 
-    html,body{
-      height:100%;
-      margin:0;
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-
+    *{ box-sizing:border-box; }
+    html, body { height:100%; }
     body{
-      background:var(--bg);
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      padding:32px;
-    }
-
-    .app{
-      width:960px;
-      max-width:96%;
-      background:var(--card);
-      border-radius:12px;
-      padding:22px;
-      box-shadow:0 8px 24px rgba(20,20,40,0.08);
+      margin:0;
+      background:
+        radial-gradient(1200px 800px at 20% -10%, #123a57 0%, var(--bg) 60%),
+        radial-gradient(1400px 900px at 120% 10%, #0e2740 0%, var(--bg) 60%),
+        var(--bg);
+      color:#eef7ff;
+      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+      overflow-x:hidden;
     }
 
     header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:14px;
-      gap:16px;
-      flex-wrap:wrap;
+      text-align:center;
+      padding:2.2rem 1rem 1rem;
+      position:relative;
+    }
+    header h1{
+      font-family: "Mountains of Christmas", "Nunito", cursive;
+      font-size: clamp(2rem, 4vw + 1rem, 3.2rem);
+      color: var(--gold);
+      text-shadow: 0 2px 0 rgba(0,0,0,.3), 0 0 18px rgba(245,209,95,.25);
+      margin: 0 0 .2rem 0;
+    }
+    header p{
+      margin:.2rem auto 0;
+      max-width: 800px;
+      color: #d7ebff;
     }
 
-    h1{
-      font-size:18px;
-      margin:0;
-      color:var(--text);
-    }
-
-    .controls{
+    /* Lichterkette */
+    .lights{
+      --size: 12px;
+      width:100%;
       display:flex;
+      justify-content:center;
       gap:10px;
-      align-items:center;
+      padding:10px 0 0;
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,.35));
       flex-wrap:wrap;
     }
+    .bulb{
+      width: var(--size);
+      height: calc(var(--size) * 1.4);
+      background: var(--gold);
+      border-radius: 50% 50% 45% 45%;
+      position: relative;
+      animation: glow 1.8s infinite ease-in-out;
+    }
+    .bulb::before{
+      content:"";
+      position:absolute; top:-6px; left:50%; transform:translateX(-50%);
+      width: 10px; height: 6px; background:#333; border-radius:2px;
+    }
+    .bulb:nth-child(3n+1){ background:#ff5a5a; animation-delay:.1s; }
+    .bulb:nth-child(3n+2){ background:#67ff75; animation-delay:.3s; }
+    .bulb:nth-child(3n){ background:#5fd7ff; animation-delay:.5s; }
 
-    label{
-      font-size:13px;
-      color:var(--muted);
+    @keyframes glow{
+      0%,100% { box-shadow: 0 0 8px 2px rgba(255,255,255,.25); opacity: .9; }
+      50%     { box-shadow: 0 0 18px 6px currentColor; opacity: 1; }
+    }
+
+    /* Toolbar */
+    .toolbar{
       display:flex;
-      flex-direction:column;
-      gap:4px;
+      justify-content:center;
+      align-items:center;
+      gap:1rem;
+      margin:1rem auto 0;
+      padding:.6rem 1rem;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      max-width: 1000px;
+    }
+    .toolbar label{
+      display:flex; align-items:center; gap:.5rem; user-select:none;
+    }
+    .tag{
+      display:inline-flex; align-items:center; gap:.4rem;
+      font-size:.9rem; padding:.25rem .5rem; border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
     }
 
-    input[type="number"]{
-      width:88px;
-      padding:6px 8px;
-      border-radius:6px;
-      border:1px solid var(--border);
-      color:var(--text);
-      background:#fff;
+    /* Kalender */
+    .calendar{
+      max-width: 1200px;
+      margin: 1.2rem auto 4rem;
+      padding: 0 1rem 2rem;
+      display:grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 900px){
+      .calendar{ grid-template-columns: repeat(4, minmax(120px, 1fr)); }
+    }
+    @media (max-width: 620px){
+      .calendar{ grid-template-columns: repeat(3, minmax(100px, 1fr)); }
     }
 
-    /* Gut lesbare Buttons: dunkler Text auf hell, außer #start */
-    button{
-      background:var(--card);
-      color:var(--text);
-      border:1px solid var(--border);
-      padding:8px 12px;
-      border-radius:8px;
-      cursor:pointer;
-      transition:background .15s ease, transform .02s ease;
-      user-select:none;
+    .door{
+      position:relative;
+      height: 160px;
+      perspective: 800px;
+      border-radius: 14px;
     }
-    button:hover{ background:#f0f2f6; }
-    button:active{ transform:translateY(1px); }
-
-    /* Prominenter Start-Button */
-    #start{
-      background:var(--accent);
-      color:#ffffff;
-      border:none;
-    }
-    #start:hover{ filter:brightness(0.95); }
-
-    .btn-ghost{
-      background:transparent;
-      border:1px solid var(--border);
-    }
-
-    .display{
-      background:#f8fafc;
-      border-radius:8px;
-      padding:20px;
-      min-height:120px;
-      font-size:22px;
-      line-height:1.6;
-      font-family:monospace;
-      color:#111;
-      white-space:normal;
-      word-wrap:break-word;
+    .panel{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(120% 90% at 50% -30%, rgba(255,255,255,.14), transparent 60%),
+        conic-gradient(from 0deg at 40% 10%, rgba(255,255,255,.06), transparent 25%),
+        linear-gradient(145deg, #194665, #0f2b41 60%, #0a2438);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.35);
+      border-radius:14px;
+      transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .2s;
+      transform-origin: left center;
       overflow:hidden;
-      outline:none;
+      cursor:pointer;
+    }
+    .panel:hover{ filter: brightness(1.05); }
+    .door.opened .panel{ transform: rotateY(-35deg); }
+
+    .door .number{
+      position:absolute; top:8px; left:10px;
+      font-weight:900;
+      color: var(--gold);
+      text-shadow: 0 1px 0 rgba(0,0,0,.4), 0 0 10px rgba(245,209,95,.25);
+      font-size: 1.2rem;
+      letter-spacing: .5px;
+      display:flex; align-items:center; gap:.35rem;
     }
 
-    .display .char{ white-space:pre; }
-
-    .char.correct{ color:#03894c; }
-    .char.incorrect{ color:#d32f2f; background:rgba(211,47,47,0.06); }
-    
-    /* Level- und Multiplikatoranzeige in Rot */
-    #level.value, #multiplierDisplay.value {
-      color: #d32f2f;
-    }
-    
-    .char.current{
-      text-decoration:underline;
-      text-decoration-color:var(--accent);
-      text-decoration-thickness:2px;
+    .wreath{
+      position:absolute; inset: 14px;
+      border-radius:12px;
+      border: 2px dashed rgba(255,255,255,.12);
+      pointer-events:none;
     }
 
-    .stats{
-      display:flex;
-      gap:18px;
-      margin-top:12px;
-      align-items:center;
-      flex-wrap:wrap;
+    .badge{
+      position:absolute; bottom:8px; right:8px;
+      background: linear-gradient(180deg, #1b5e20, #0f3e14);
+      color: #d8ffd3;
+      border: 1px solid rgba(0,0,0,.35);
+      border-radius: 999px;
+      padding: .25rem .5rem;
+      font-size: .8rem;
+      display:inline-flex; align-items:center; gap:.35rem;
+    }
+    .badge svg{ width:16px; height:16px; }
+
+    .door.meditation .badge{
+      background: linear-gradient(180deg, #6a1b9a, #4a126c);
+      color: #f5e9ff;
     }
 
-    .stat{ font-size:14px; color:var(--muted); }
-    .value{ color:var(--text); font-weight:600; }
+    .door.done .badge{
+      background: linear-gradient(180deg, #b28704, #8a6803);
+      color: #fff7dc;
+    }
 
-    .bad-list{ margin-left:auto; font-size:13px; color:var(--muted); }
+    /* Moderner Schnee */
+    .snow{
+      pointer-events:none;
+      position:fixed; inset:0;
+      overflow:hidden;
+      z-index:0;
+    }
+    .flake{
+      position:absolute; top:-10px;
+      color: var(--snow);
+      opacity: .8;
+      animation: fall linear infinite;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 2px 2px rgba(255,255,255,.3));
+    }
+    @keyframes fall{
+      to { transform: translate(var(--x-move), 110vh) rotate(360deg); opacity: .95; }
+    }
+
+    /* Modal */
+    .modal{
+      position: fixed; inset: 0;
+      background: rgba(4, 12, 22, .65);
+      display:none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 10;
+      backdrop-filter: blur(3px);
+    }
+    .modal.show{ display:flex; }
+    .sheet{
+      width: min(860px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+      border-radius: 16px;
+      padding: 1rem;
+      position:relative;
+    }
+    .sheet header{
+      padding: .5rem 3rem .5rem .5rem;
+      text-align:left;
+    }
+    .sheet header h2{
+      margin:.3rem 0 0; color: var(--gold);
+      font-family: "Mountains of Christmas", "Nunito", cursive;
+      text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 0 10px rgba(245,209,95,.2);
+    }
+    .sheet .content{
+      display:grid;
+      gap: 1rem;
+      grid-template-columns: 1.1fr .9fr;
+    }
+    @media (max-width: 820px){ .sheet .content{ grid-template-columns: 1fr; } }
+
+    .list{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      padding: .75rem .9rem;
+    }
+    .list h3{
+      margin:.2rem 0 .6rem; color:#cfe9ff;
+      font-size:1rem; letter-spacing:.3px;
+      text-transform:uppercase;
+    }
+    .list ul{ margin:.4rem 0 .2rem 1.1rem; }
+    .list li{ margin:.35rem 0; }
+
+    .timer{
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      padding: .9rem;
+      display:flex; flex-direction:column; gap:.6rem;
+    }
+    .time{
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 900;
+      color: #e7f5ff;
+      text-align:center;
+      text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
+    .controls{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      color:#eaf6ff;
+      padding:.6rem .9rem;
+      border-radius: 10px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn.primary{ background: linear-gradient(180deg, #1b5e20, #0f3e14); border-color: rgba(0,0,0,.4); }
+    .btn.warn{ background: linear-gradient(180deg, #5d120f, #3a0a09); border-color: rgba(0,0,0,.5); }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+    .helper{
+      display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; justify-content:center;
+      font-size:.9rem;
+    }
+    .helper .tag{ background: rgba(255,255,255,.08); }
+
+    .close{
+      position:absolute; top:.6rem; right:.6rem;
+      width:38px; height:38px; border-radius:10px;
+      display:grid; place-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.16);
+      cursor:pointer;
+    }
 
     footer{
-      margin-top:16px;
-      font-size:13px;
-      color:var(--muted);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:8px;
+      text-align:center;
+      color:#cfe9ff;
+      opacity:.8;
+      padding: 0 1rem 2rem;
     }
+    footer a{ color: var(--gold); text-decoration:none; }
 
-    .small{ font-size:12px; color:var(--muted); }
-
-    @media (max-width:640px){
-      .display{ font-size:18px; }
+    /* Heutiger Tag Highlight (wenn im Dezember) */
+    .today .panel{
+      box-shadow: inset 0 0 0 2px rgba(245,209,95,.6), 0 14px 34px rgba(245,209,95,.12), 0 0 30px rgba(245,209,95,.15);
+      animation: breathe 2.5s ease-in-out infinite;
     }
-
-    /* Einfache Modal-Styles (für hübscheres Popup statt alert) */
-    .modal-backdrop{
-      position:fixed; inset:0; 
-      background:rgba(0,0,0,0.35);
-      display:none; align-items:center; justify-content:center;
-      padding:20px;
-      z-index:50;
+    @keyframes breathe {
+      0%,100% { filter: brightness(1); }
+      50% { filter: brightness(1.08); }
     }
-    .modal{
-      background:#fff; border-radius:10px; max-width:720px; width:100%;
-      box-shadow:0 20px 60px rgba(0,0,0,0.16); overflow:hidden;
-      display:flex; flex-direction:column;
-    }
-    .modal header{ padding:14px 16px; border-bottom:1px solid var(--border); }
-    .modal header h2{ margin:0; font-size:16px; color:var(--text); }
-    .modal .content{ padding:16px; max-height:60vh; overflow:auto; }
-    .modal .actions{ padding:12px 16px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px; }
-    .table{
-      width:100%; border-collapse:collapse; font-size:13px; color:#222;
-    }
-    .table th, .table td{ border-bottom:1px solid #eceff5; padding:8px 6px; text-align:left; }
-    .badge{
-      display:inline-block; padding:2px 6px; border-radius:999px; border:1px solid var(--border); font-size:12px;
-    }
-    .mono{ font-family:monospace; }
   </style>
 </head>
 <body>
-  <div class="app" role="main">
+  <div class="snow" aria-hidden="true"></div>
 
-    <header>
-      <h1>Typing Practice — adaptive </h1>
-
-      <div class="controls" aria-hidden="false">
-        <label>
-          Länge (Zeichen, max. 40)
-          <input id="len" type="number" value="40" min="10" max="40" />
-        </label>
-
-        <button id="start">Start</button>
-        <button id="stop" class="btn-ghost">Stop</button>
-
-        <button id="showScores" class="btn-ghost">Alle Scores</button>
-        <button id="showLevels" class="btn-ghost">Level-Liste</button>
-        <button id="shop" class="btn-ghost">Coin-Shop</button>
-
-        <button id="resetStats" class="btn-ghost">Stats zurücksetzen</button>
-      </div>
-    </header>
-
-    <div id="display" class="display" tabindex="0" aria-label="Übungstext"></div>
-
-    <div class="stats">
-      <div class="stat">WPM: <strong id="wpm" class="value">0</strong></div>
-      <div class="stat">Accuracy: <strong id="acc" class="value">100%</strong></div>
-      <div class="stat">Zeit: <strong id="time" class="value">0s</strong></div>
-      <div class="stat">Coins: <strong id="coins" class="value">0</strong></div>
-      <div class="stat">Level: <strong id="level" class="value">—</strong></div>
-      <div class="stat" style="margin-left: auto;">Multiplier: <strong id="multiplierDisplay" class="value">x1</strong></div>
+  <header>
+    <h1>Fitness Adventskalender</h1>
+    <p>24 Türchen – jeden Tag ein 10‑Minuten‑Workout. An ausgewählten Tagen gibt’s eine wohltuende 10‑Minuten‑Meditation als aktive Pause. Viel Spaß & frohe, fitte Adventszeit! 🎅✨</p>
+    <div class="lights" aria-hidden="true">
+      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
     </div>
+    <div class="toolbar">
+      <label class="tag">
+        <input type="checkbox" id="previewToggle" />
+        Vorschau-Modus (alle Türchen öffnbar)
+      </label>
+      <span class="tag" title="Meditations-Tage: aktive Erholung">
+        🕊️ Meditations-Tage enthalten
+      </span>
+      <span class="tag" title="Dein Fortschritt wird lokal gespeichert">
+        ✅ Fortschritt wird gespeichert
+      </span>
+    </div>
+  </header>
 
-    <footer>
-      <div class="small">
-        Tippe den Text. Backspace erlaubt Korrekturen.
-        Coins können im Shop in Multiplikatoren investiert werden.
+  <main class="calendar" id="calendar" aria-label="Adventskalender mit 24 Türchen"></main>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tagesplan">
+    <div class="sheet">
+      <button class="close" id="closeModal" aria-label="Schließen">
+        ✖
+      </button>
+      <header>
+        <div class="helper">
+          <span class="tag" id="dayTag">Tag 1</span>
+          <span class="tag" id="typeTag">Workout</span>
+          <span class="tag" id="statusTag">Nicht erledigt</span>
+        </div>
+        <h2 id="title">Titel</h2>
+      </header>
+      <div class="content">
+        <section class="list">
+          <h3 id="listTitle">Ablauf (10 Minuten)</h3>
+          <ul id="items"></ul>
+        </section>
+        <aside class="timer">
+          <div class="time" id="time">10:00</div>
+          <div class="controls">
+            <button class="btn primary" id="startPause">▶ Start</button>
+            <button class="btn" id="reset">↺ Reset</button>
+            <button class="btn" id="doneToggle">✅ Als erledigt markieren</button>
+          </div>
+          <div class="helper">
+            <span class="tag">⏱️ Standard: 10:00</span>
+            <span class="tag">🔊 Signal bei 0:00</span>
+            <span class="tag">💡 Tipp: Wasser bereitstellen</span>
+          </div>
+        </aside>
       </div>
-      <div>
-        <button id="downloadReport" class="btn-ghost">Bericht (.json)</button>
-      </div>
-    </footer>
+    </div>
   </div>
 
-  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <header><h2 id="modalTitle">Übersicht</h2></header>
-      <div id="modalContent" class="content"></div>
-      <div class="actions">
-        <button id="modalClose">Schließen</button>
-      </div>
-    </div>
-  </div>
+  <footer>
+    <p>🎁 Tipp: Viel Proteinlebkuchen und Freude beim Training, Beste grüße Sven !</p>
+  </footer>
 
   <script>
-    /*
-      ================================================================================
-      Persistenz & Utilities
-      ================================================================================
-    */
-    const STORAGE_KEY = 'typing_adapt_stats_v3'; // neue Version, um alte Strukturen nicht zu clashen
+    /************* Daten *************/
+    const meditationDays = [4, 8, 12, 16, 20, 24]; // Pausen-/Meditations-Tage
 
-    function loadStats(){
-      try{
-        const stats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-        return {
-          sessions: stats.sessions || [],
-          coins: stats.coins || 0,
-          multiplier: stats.multiplier || 1
-        };
-      }catch(e){
-        return { sessions:[], coins:0, multiplier:1 };
-      }
+    // Hilfsfunktionen für Inhalte:
+    const makeWorkout = (title, exercises, scheme = "5 Übungen × 2 Runden (je 60s)") => ({
+      type: "workout",
+      title,
+      scheme,
+      items: exercises
+    });
+
+    const makeMeditation = (title, steps) => ({
+      type: "meditation",
+      title,
+      scheme: "10 Minuten Achtsamkeit",
+      items: steps
+    });
+
+    // 24 Tage: 18 Workouts + 6 Meditationen
+    const plan = {
+      1:  makeWorkout("Ganzkörper-Kickstart", [
+        "Jumping Jacks (Low Impact: Step Jacks)",
+        "Kniebeugen",
+        "Liegestütze (optional auf Knien)",
+        "Ausfallschritte im Wechsel",
+        "Unterarmstütz (Plank)"
+      ]),
+      2:  makeWorkout("Core & Haltung", [
+        "Dead Bug",
+        "Glute Bridge",
+        "Bicycle Crunches",
+        "Bird Dog",
+        "Seitstütz (links/rechts halbieren)"
+      ]),
+      3:  makeWorkout("Cardio Light", [
+        "High Knees (Low Impact: March)",
+        "Skater",
+        "Bergsteiger (Mountain Climbers)",
+        "Kniebeugen-Impulse",
+        "Armkreisen im Ausfallschritt"
+      ]),
+      4:  makeMeditation("Atempause – Box Breathing", [
+        "Finde eine bequeme Sitzposition",
+        "2′ Einchecken: Körperwahrnehmung",
+        "3′ Box Breathing: 4s ein, 4s halten, 4s aus, 4s halten",
+        "3′ Body Scan von Kopf bis Fuß",
+        "2′ Dankbarkeit: 3 Dinge benennen"
+      ]),
+      5:  makeWorkout("Unterkörper Fokus", [
+        "Kniebeugen",
+        "Seitliche Ausfallschritte",
+        "Wandsitz",
+        "Wadenheben",
+        "Hip Hinge (Good Mornings)"
+      ]),
+      6:  makeWorkout("Oberkörper & Core", [
+        "Liegestütze (Varianten erlaubt)",
+        "Superman",
+        "Trizeps-Dips am Stuhl",
+        "Plank mit Shoulder Taps",
+        "Russian Twists"
+      ]),
+      7:  makeWorkout("Mobility Flow", [
+        "Cat–Cow",
+        "World’s Greatest Stretch (rechts/links)",
+        "Achsel-Öffner im Kniestand",
+        "Hüftbeuger-Stretch",
+        "Vorbeuge mit Schulter-Mobilisation"
+      ], "Flow – langsam & bewusst (2 Runden je 60s)"),
+      8:  makeMeditation("Kerzenmeditation (Tratak)", [
+        "Sitze aufrecht, Kerze auf Augenhöhe (oder imaginäre Kerze)",
+        "2′ Blick weich auf die Flamme richten",
+        "3′ Atem natürlich fließen lassen, Wandern der Gedanken bemerken",
+        "3′ Augen schließen: Nachbild beobachten",
+        "2′ Sanft zurückkommen, Augen öffnen"
+      ]),
+      9:  makeWorkout("HIIT Basic (Low/High Mix)", [
+        "Burpees (Low Impact: halbe Burpees)",
+        "Kniebeugen-Sprünge (oder schnelle Kniebeugen)",
+        "Bergsteiger",
+        "Skater",
+        "Plank Jacks (oder statischer Plank)"
+      ]),
+      10: makeWorkout("Rumpf-Stabil", [
+        "Hohes Brett (Plank) – 60s",
+        "Seitstütz links – 60s",
+        "Seitstütz rechts – 60s",
+        "Rückenstrecker („Schwimmer“)",
+        "Hollow Hold / Dead Bug"
+      ]),
+      11: makeWorkout("Beine & Po", [
+        "Ausfallschritte rückwärts",
+        "Hip Bridge (mit Pause oben)",
+        "Sumo Squats",
+        "Step-Ups (Stufe/Stuhl, vorsichtig!)",
+        "Donkey Kicks"
+      ]),
+      12: makeMeditation("Body Scan kurz & klar", [
+        "Bequem hinlegen oder setzen",
+        "2′ Atem spüren, Bauch hebt/senkt",
+        "2′ Füße/Beine scannen",
+        "3′ Becken/Brust/Schultern scannen",
+        "3′ Kopf/Gesicht, dann Gesamtwahrnehmung"
+      ]),
+      13: makeWorkout("Cardio & Core Mix", [
+        "Jumping Jacks",
+        "Bicycle Crunches",
+        "Kniehebelauf",
+        "Russian Twists",
+        "Bergsteiger"
+      ]),
+      14: makeWorkout("Push & Pull zuhause", [
+        "Liegestütze",
+        "Tisch-Rudern (unter stabilen Tisch, Vorsicht!) / oder Theraband",
+        "Trizeps-Dips",
+        "Superman (mit Armheben)",
+        "Plank mit langsamen Shoulder Taps"
+      ]),
+      15: makeWorkout("Gelenkfreundlich (Low Impact)", [
+        "Step Jacks",
+        "Squat to Chair (auf Stuhl absetzen)",
+        "Wall Push-Ups",
+        "March + Armzüge",
+        "Seitliches Tippen + Mini-Kniebeuge"
+      ], "5 Übungen × 2 Runden (je 60s, sanft)"),
+      16: makeMeditation("4‑7‑8 Atemtechnik", [
+        "Aufrecht sitzen, Schultern entspannen",
+        "1′ Einchecken",
+        "5′ Atem: 4s ein – 7s halten – 8s aus (ruhig, komfortabel)",
+        "3′ Still sitzen, Atem frei fließen lassen",
+        "1′ Sanft re‑orientieren"
+      ]),
+      17: makeWorkout("Athletik Ganzkörper", [
+        "Inchworm Walkouts",
+        "Seitliche Ausfallschritte",
+        "Liegestütze",
+        "Kniebeugen-Sprünge (oder schnell)",
+        "Plank mit Beinheben"
+      ]),
+      18: makeWorkout("Core Rotation", [
+        "Russian Twists",
+        "Seitstütz-Heben (links)",
+        "Seitstütz-Heben (rechts)",
+        "Fahrrad-Crunches",
+        "Hollow Hold / Dead Bug"
+      ]),
+      19: makeWorkout("Mobil & stark", [
+        "World’s Greatest Stretch",
+        "Hip Bridge",
+        "Good Mornings",
+        "T-Spine Rotation im Vierfüßler",
+        "Plank mit langsamen Gewichtsverlagerungen"
+      ]),
+      20: makeMeditation("Loving Kindness (Metta)", [
+        "Bequem sitzen, Herzraum wahrnehmen",
+        "2′ Atem beruhigen",
+        "3′ Wünsche an dich: „Möge ich sicher/gesund/zufrieden sein“",
+        "3′ Wünsche an andere Menschen",
+        "2′ Nachspüren: Wärme/Weite im Brustraum"
+      ]),
+      21: makeWorkout("Beine & Balance", [
+        "Einbein-Kniebeugen zum Stuhl (abwechseln)",
+        "Seitlicher Step + Kniehebelauf",
+        "Calf Raises (Wadenheben, langsam)",
+        "Seitstütz-Knie zur Brust (links/rechts)",
+        "Wall Sit"
+      ]),
+      22: makeWorkout("Oberkörper kompakt", [
+        "Liegestütze eng (Trizeps-Fokus, modifizierbar)",
+        "Pike Push-Ups (oder Schulterdrücken mit Band)",
+        "Tisch-Rudern / Zugvariante",
+        "Reverse Snow Angels (Bauchlage)",
+        "Plank Up-Downs"
+      ]),
+      23: makeWorkout("X‑Mas Sweat 🎁", [
+        "Burpees (oder halbe Burpees)",
+        "Skater",
+        "Kniebeugen schnell",
+        "Bergsteiger",
+        "Jumping Jacks"
+      ]),
+      24: makeMeditation("Heiligabend – Ruhe & Dankbarkeit", [
+        "2′ Ankommen & Atem wahrnehmen",
+        "3′ Dankbarkeit: 3–5 Momente aus diesem Advent",
+        "3′ Body Scan leicht & freundlich",
+        "2′ Vorsatz: eine kleine gute Tat"
+      ]),
+    };
+
+    /************* Kalender-Aufbau *************/
+    const calendarEl = document.getElementById('calendar');
+    const modal = document.getElementById('modal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const previewToggle = document.getElementById('previewToggle');
+
+    // Fortschritt (localStorage)
+    const LS_KEY = 'fitness_advent_done_v1';
+    const doneSet = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]'));
+
+    function saveProgress(){
+      localStorage.setItem(LS_KEY, JSON.stringify([...doneSet]));
     }
 
-    function saveStats(stats){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+    // Ist Türchen laut Datum offen? (Dezember-Logik)
+    function isUnlockedByDate(day){
+      const now = new Date();
+      const month = now.getMonth(); // 0 = Jan, 11 = Dez
+      const date = now.getDate();
+      // Nur im Dezember beschränken – ansonsten frei (oder via Vorschau)
+      if (month !== 11) return true;
+      return date >= day;
     }
 
-    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
-    
-    function formatNumber(num) {
-      return new Intl.NumberFormat('de-DE').format(num);
-    }
+    function dayIsMeditation(day){ return meditationDays.includes(day); }
 
-    /*
-      ================================================================================
-      NEUES Level-Mapping
-      ================================================================================
-    */
-    function getLevel(wpm){
-      if (wpm < 10) return "faultier";
-      if (wpm < 15) return "schildkröte";
-      if (wpm < 20) return "DIggaMici";
-      if (wpm < 23) return "Rückschritt ist kein Fortschritt";
-      if (wpm < 30) return "schlechter Beginner Luke";
-      if (wpm < 35) return "Expert Beginner Luke";
-      if (wpm < 40) return "Actual Average Dude";
-      if (wpm < 60) return "Very Nerdy Expert";
-      if (wpm < 80) return "LEGEND Expert";
-      if (wpm < 120) return "Genius";
-      if (wpm < 200) return "Über-Genius";
-      if (wpm < 400) return "Galactic Typist";
-      if (wpm < 1000) return "Keyboard-Demigod";
-      if (wpm < 5000) return "Quantum Finger";
-      if (wpm < 10000) return "Typo Singularity";
-      if (wpm < 100000) return "Omega Being";
-      return "The Final Key";
-    }
+    function createDoor(day){
+      const d = document.createElement('div');
+      d.className = 'door' + (dayIsMeditation(day) ? ' meditation' : '');
+      if (doneSet.has(day)) d.classList.add('done');
 
-    function getAllLevels(){
-      return [
-        { level: "Normale Level", isHeader: true },
-        { label: "faultier", range: "< 10 WPM" },
-        { label: "schildkröte", range: "< 15 WPM" },
-        { label: "DIggaMici", range: "< 20 WPM" },
-        { label: "Rückschritt ist kein Fortschritt", range: "< 23 WPM" },
-        { label: "schlechter Beginner Luke", range: "< 30 WPM" },
-        { label: "Expert Beginner Luke", range: "< 35 WPM" },
-        { label: "Actual Average Dude", range: "< 40 WPM" },
-        { label: "Very Nerdy Expert", range: "< 60 WPM" },
-        { label: "LEGEND Expert", range: "< 80 WPM" },
-        { label: "Genius", range: "< 120 WPM" },
-        { level: "Surreale Level", isHeader: true, style: "margin-top: 1em;" },
-        { label: "Über-Genius", range: "< 200 WPM" },
-        { label: "Galactic Typist", range: "< 400 WPM" },
-        { label: "Keyboard-Demigod", range: "< 1.000 WPM" },
-        { label: "Quantum Finger", range: "< 5.000 WPM" },
-        { label: "Typo Singularity", range: "< 10.000 WPM" },
-        { label: "Omega Being", range: "< 100.000 WPM" },
-        { label: "The Final Key", range: "≥ 100.000 WPM" },
-      ];
-    }
-
-    /*
-      ================================================================================
-      Textgenerator
-      ================================================================================
-    */
-    function generateText(limit = 40){
-      limit = clamp(Number(limit)||40, 1, 40);
-      let text = "";
-      while(text.length < limit){
-        const wordLen = 2 + Math.floor(Math.random()*6); // 2-7
-        let word = "";
-        for(let i=0;i<wordLen;i++){
-          word += String.fromCharCode(97 + Math.floor(Math.random()*26));
-        }
-        const candidate = (text.length ? " " : "") + word;
-        if(text.length + candidate.length > limit) break;
-        text += candidate;
-      }
-      return text;
-    }
-
-    /*
-      ================================================================================
-      TypingSession
-      - WPM & Coins werden durch den Multiplikator beeinflusst
-      ================================================================================
-    */
-    class TypingSession{
-      constructor(target){
-        this.target = target;
-        this.spans = [];
-        this.index = 0;
-        this.typedStatuses = new Array(this.target.length).fill(null); // null/true/false
-        this.correctCount = 0;
-        this.typedCount = 0;
-        this.startTime = null;
-        this.timerInterval = null;
-        this.coinsEarned = 0; // Session-Coins (inkl. multiplier)
-        this.initUI();
-        this.attachEvents();
+      // Heutiger Tag markieren (nur im Dezember)
+      const now = new Date();
+      if (now.getMonth() === 11 && now.getDate() === day){
+        d.classList.add('today');
       }
 
-      initUI(){
-        const display = document.getElementById('display');
-        display.innerHTML = '';
-        this.spans = [];
-        for(let i=0;i<this.target.length;i++){
-          const ch = this.target[i];
-          const span = document.createElement('span');
-          span.className = 'char';
-          span.textContent = ch;
-          display.appendChild(span);
-          this.spans.push(span);
-        }
-        this.index = 0;
-        if(this.spans.length){ this.spans[0].classList.add('current'); }
-        document.getElementById('wpm').textContent = '0';
-        document.getElementById('acc').textContent = '100%';
-        document.getElementById('time').textContent = '0s';
-        const stats = loadStats();
-        document.getElementById('coins').textContent = formatNumber(stats.coins);
-        document.getElementById('level').textContent = '—';
-        display.focus();
-      }
+      // Struktur
+      d.innerHTML = `
+        <div class="panel" role="button" aria-label="Türchen ${day} öffnen" tabindex="0">
+          <div class="number">Tag ${day}</div>
+          <div class="wreath" aria-hidden="true"></div>
+          <div class="badge">
+            ${dayIsMeditation(day) ? '🕊️ Meditation' : '💪 Workout'}
+          </div>
+        </div>
+      `;
 
-      attachEvents(){
-        this.keyHandler = (e)=>this.onKey(e);
-        document.addEventListener('keydown', this.keyHandler);
-        this.pasteHandler = (e)=>e.preventDefault();
-        document.getElementById('display').addEventListener('paste', this.pasteHandler);
-      }
+      const panel = d.querySelector('.panel');
+      const canOpen = () => previewToggle.checked || isUnlockedByDate(day);
 
-      detachEvents(){
-        document.removeEventListener('keydown', this.keyHandler);
-        document.getElementById('display').removeEventListener('paste', this.pasteHandler);
-        if(this.timerInterval){ clearInterval(this.timerInterval); this.timerInterval = null; }
-      }
-
-      onKey(e){
-        if(e.key === 'Backspace'){
-          e.preventDefault();
-          if(this.index === 0) return;
-          const prev = this.index - 1;
-          if(this.typedStatuses[prev] !== null){
-            this.typedCount--;
-            if(this.typedStatuses[prev] === true) this.correctCount--;
-          }
-          this.typedStatuses[prev] = null;
-          this.spans[prev]?.classList.remove('correct','incorrect');
-          this.spans[this.index]?.classList.remove('current');
-          this.index = prev;
-          this.spans[this.index]?.classList.add('current');
-          this.updateStats();
+      const open = () => {
+        if (!canOpen()){
+          shake(panel);
+          tooltip(panel, "Noch nicht freigeschaltet (außer Vorschau)");
           return;
         }
+        d.classList.add('opened');
+        openModal(day);
+      };
 
-        if(typeof e.key !== 'string' || e.key.length !== 1) return;
-        e.preventDefault();
+      panel.addEventListener('click', open);
+      panel.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
 
-        if(this.startTime === null){
-          this.startTime = Date.now();
-          this.timerInterval = setInterval(()=>this.updateStats(), 200);
-        }
+      return d;
+    }
 
-        if(this.index >= this.target.length) return;
-        const expected = this.target[this.index];
-        const typed = e.key;
-
-        if(this.typedStatuses[this.index] === null){
-          this.typedCount++;
-        }
-
-        if(typed === expected){
-          this.typedStatuses[this.index] = true;
-          this.correctCount++;
-          this.spans[this.index]?.classList.add('correct');
-        }else{
-          this.typedStatuses[this.index] = false;
-          this.spans[this.index]?.classList.add('incorrect');
-        }
-
-        this.spans[this.index]?.classList.remove('current');
-        this.index++;
-        if(this.index < this.spans.length){
-          this.spans[this.index]?.classList.add('current');
-        }else{
-          this.finish();
-        }
-
-        this.updateStats();
-      }
-
-      updateStats(){
-        const secs = this.startTime ? Math.floor((Date.now() - this.startTime)/1000) : 0;
-        const minutes = Math.max(0.001, secs/60);
-        
-        const stats = loadStats();
-        const multiplier = stats.multiplier || 1;
-        
-        // WPM mit Multiplikator
-        const wpm = Math.round(((this.correctCount / 5) / minutes) * multiplier);
-        const acc = this.typedCount > 0 ? Math.round((this.correctCount / this.typedCount) * 100) : 100;
-        
-        // Coins mit Multiplikator
-        this.coinsEarned = this.correctCount * multiplier;
-
-        document.getElementById('wpm').textContent = String(wpm);
-        document.getElementById('acc').textContent = acc + '%';
-        document.getElementById('time').textContent = secs + 's';
-        document.getElementById('coins').textContent = formatNumber(stats.coins + this.coinsEarned);
-        document.getElementById('level').textContent = getLevel(wpm);
-      }
-
-      finish(){
-        this.detachEvents();
-
-        const secs = this.startTime ? Math.max(1, Math.floor((Date.now() - this.startTime)/1000)) : 0;
-        const minutes = Math.max(0.001, secs/60);
-        
-        const stats = loadStats();
-        const multiplier = stats.multiplier || 1;
-
-        const wpm = Math.round(((this.correctCount / 5) / minutes) * multiplier);
-        const acc = this.typedCount > 0 ? Math.round((this.correctCount / this.typedCount) * 100) : 100;
-        this.coinsEarned = this.correctCount * multiplier;
-
-        stats.coins += this.coinsEarned;
-        stats.sessions.push({
-          date: new Date().toISOString(),
-          wpm, acc, secs, coins: this.coinsEarned, level: getLevel(wpm)
-        });
-        saveStats(stats);
-
-        showModal(
-          "Session beendet",
-          `
-            <p class="mono">WPM: <strong>${wpm}</strong> &nbsp;•&nbsp; Accuracy: <strong>${acc}%</strong> &nbsp;•&nbsp; Zeit: <strong>${secs}s</strong></p>
-            <p>Coins verdient: <span class="badge">+${formatNumber(this.coinsEarned)}</span> (aktueller Multiplikator: x${stats.multiplier})</p>
-            <p>Dein Level: <strong>${getLevel(wpm)}</strong></p>
-          `
-        );
+    function renderCalendar(){
+      calendarEl.innerHTML = '';
+      for (let day=1; day<=24; day++){
+        calendarEl.appendChild(createDoor(day));
       }
     }
 
-    /*
-      ================================================================================
-      Modal Helfer
-      ================================================================================
-    */
-    const modalBackdrop = document.getElementById('modalBackdrop');
-    const modalTitle    = document.getElementById('modalTitle');
-    const modalContent  = document.getElementById('modalContent');
-    const modalCloseBtn = document.getElementById('modalClose');
+    /************* Modal & Timer *************/
+    const dayTag = document.getElementById('dayTag');
+    const typeTag = document.getElementById('typeTag');
+    const statusTag = document.getElementById('statusTag');
+    const titleEl = document.getElementById('title');
+    const listTitle = document.getElementById('listTitle');
+    const itemsEl = document.getElementById('items');
 
-    function showModal(title, html){
-      modalTitle.textContent = title;
-      modalContent.innerHTML = html;
-      modalBackdrop.style.display = 'flex';
-      modalBackdrop.setAttribute('aria-hidden','false');
+    const timeEl = document.getElementById('time');
+    const startPauseBtn = document.getElementById('startPause');
+    const resetBtn = document.getElementById('reset');
+    const doneToggleBtn = document.getElementById('doneToggle');
+
+    let currentDay = 1;
+    let remaining = 600; // Sekunden
+    let running = false;
+    let interval = null;
+
+    function fmt(t){
+      const m = Math.floor(t/60).toString().padStart(2,'0');
+      const s = (t%60).toString().padStart(2,'0');
+      return `${m}:${s}`;
     }
-    function hideModal(){
-      modalBackdrop.style.display = 'none';
-      modalBackdrop.setAttribute('aria-hidden','true');
+    function updateTime(){
+      timeEl.textContent = fmt(remaining);
     }
-    modalCloseBtn.addEventListener('click', hideModal);
-    modalBackdrop.addEventListener('click', (e)=>{
-      if(e.target === modalBackdrop) hideModal();
-    });
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && modalBackdrop.style.display === 'flex') hideModal();
-    });
 
-    /*
-      ================================================================================
-      Buttons: Start / Stop / Scores / Levels / Shop / Reset / Download
-      ================================================================================
-    */
-    const startBtn = document.getElementById('start');
-    const stopBtn  = document.getElementById('stop');
-    const lenInput = document.getElementById('len');
+    function beep(){
+      try{
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, ctx.currentTime);
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.26);
+      } catch(e){}
+    }
 
-    startBtn.addEventListener('click', ()=>{
-      if (window.currentSession) {
-        window.currentSession.detachEvents();
-      }
-      const len = clamp(Number(lenInput.value)||40, 10, 40);
-      lenInput.value = String(len);
-      const text = generateText(len);
-      window.currentSession = new TypingSession(text);
-    });
-
-    stopBtn.addEventListener('click', ()=>{
-      if(window.currentSession){
-        window.currentSession.finish();
-      }
-    });
-
-    // Alle Scores
-    document.getElementById('showScores').addEventListener('click', ()=>{
-      const stats = loadStats();
-      if(!stats.sessions.length){
-        showModal("Alle Scores", `<p>Noch keine Sessions vorhanden.</p>`);
-        return;
-      }
-      const rows = stats.sessions.map((s,i)=>`
-        <tr>
-          <td>${i+1}</td>
-          <td><span class="mono">${new Date(s.date).toLocaleString('de-DE')}</span></td>
-          <td>${s.wpm}</td>
-          <td>${s.acc}%</td>
-          <td>${s.secs}s</td>
-          <td>+${formatNumber(s.coins)}</td>
-          <td><span class="badge">${s.level}</span></td>
-        </tr>
-      `).reverse().join("");
-
-      const listItems = getAllLevels().map(l => {
-          if (l.isHeader) {
-            return `<li style="list-style-type:none; font-weight:bold; ${l.style || ''}">${l.level}</li>`;
-          }
-          return `<li><strong>${l.label}</strong> — ${l.range}</li>`;
-        }).join("");
-
-      const html = `
-        <p>Gesamt-Coins: <strong>${formatNumber(stats.coins)}</strong> &nbsp;•&nbsp; Aktueller Multiplikator: <strong>x${stats.multiplier}</strong></p>
-        <div style="overflow:auto;">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Datum</th>
-                <th>WPM</th>
-                <th>Accuracy</th>
-                <th>Zeit</th>
-                <th>Coins</th>
-                <th>Level</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-        <hr style="border:none;border-top:1px solid #eee;margin:12px 0;">
-        <details>
-          <summary>Level-Legende anzeigen</summary>
-          <ul style="padding-left: 20px;">${listItems}</ul>
-        </details>
-      `;
-      showModal("Alle Scores", html);
-    });
-
-    // Level-Liste
-    document.getElementById('showLevels').addEventListener('click', ()=>{
-      const list = getAllLevels().map(l => {
-          if (l.isHeader) {
-            return `<li style="list-style-type:none; font-weight:bold; ${l.style || ''}">${l.level}</li>`;
-          }
-          return `<li><strong>${l.label}</strong> — ${l.range}</li>`;
-        }).join("");
-      showModal("Level-Liste", `<ul style="padding-left: 20px;">${list}</ul>`);
-    });
-
-    // Coin-Shop inkl. x1000 (10x teurer als x100)
-    document.getElementById('shop').addEventListener('click', ()=>{
-      const stats = loadStats();
-      const shopItems = [
-        { id: 'buyX2', mult: 2, price: 500 },
-        { id: 'buyX3', mult: 3, price: 2000 },
-        { id: 'buyX4', mult: 4, price: 5000 },
-        { id: 'buyX5', mult: 5, price: 15000 },
-        { id: 'buyX10', mult: 10, price: 100000 },
-        { id: 'buyX100', mult: 100, price: 1000000 },
-        { id: 'buyX1000', mult: 1000, price: 10000000 }, // NEU
-      ];
-      
-      const buttonsHtml = shopItems.map(item => 
-        `<button id="${item.id}" ${stats.coins < item.price ? 'disabled' : ''}>Kaufe x${item.mult} (${formatNumber(item.price)} Coins)</button>`
-      ).join('');
-
-      const html = `
-        <p>Coins: <strong>${formatNumber(stats.coins)}</strong> &nbsp;•&nbsp; Aktueller Multiplikator: <strong>x${stats.multiplier}</strong></p>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          ${buttonsHtml}
-          <button id="resetMul" class="btn-ghost">Multiplikator zurücksetzen</button>
-        </div>
-        <p class="small" style="margin-top:8px;">Der Multiplikator beeinflusst WPM und Coins in neuen Sessions (Coins = korrekte Zeichen × Multiplikator).</p>
-      `;
-      showModal("Coin-Shop", html);
-
-      // Buttons erst NACH dem Rendern anbinden
-      setTimeout(()=>{
-        shopItems.forEach(item => {
-          document.getElementById(item.id)?.addEventListener('click', () => {
-            const s = loadStats();
-            if ((s.coins || 0) >= item.price) {
-              s.coins -= item.price;
-              s.multiplier = item.mult;
-              saveStats(s);
-              document.getElementById('coins').textContent = formatNumber(s.coins);
-              document.getElementById('multiplierDisplay').textContent = `x${s.multiplier}`;
-              showModal("Kauf erfolgreich", `<p>Gekauft: <strong>x${s.multiplier}</strong>. Neuer Stand: ${formatNumber(s.coins)} Coins.</p>`);
-            } else {
-              showModal("Fehler", `<p>Nicht genug Coins für x${item.mult} (benötigt ${formatNumber(item.price)}).</p>`);
-            }
-          });
-        });
-        
-        document.getElementById('resetMul')?.addEventListener('click', ()=>{
-          const s = loadStats();
-          s.multiplier = 1; 
-          saveStats(s);
-          document.getElementById('multiplierDisplay').textContent = `x1`;
-          showModal("Coin-Shop", `<p>Multiplikator zurückgesetzt auf <strong>x1</strong>.</p>`);
-        });
-      }, 0);
-    });
-
-
-    // Stats löschen
-    document.getElementById('resetStats').addEventListener('click', ()=>{
-      if(confirm('Alle lokal gespeicherten Statistiken wirklich löschen?')){
-        localStorage.removeItem(STORAGE_KEY);
-        // UI reset
-        document.getElementById('coins').textContent = '0';
-        document.getElementById('wpm').textContent = '0';
-        document.getElementById('acc').textContent = '100%';
-        document.getElementById('time').textContent = '0s';
-        document.getElementById('level').textContent = '—';
-        document.getElementById('multiplierDisplay').textContent = 'x1';
-        document.getElementById('display').innerHTML = '';
-        if (window.currentSession) {
-          window.currentSession.detachEvents();
-          window.currentSession = null;
+    function startTimer(){
+      if (running) return;
+      running = true;
+      startPauseBtn.textContent = '⏸ Pause';
+      interval = setInterval(()=>{
+        remaining--;
+        if (remaining <= 0){
+          remaining = 0;
+          stopTimer();
+          updateTime();
+          beep();
+        } else {
+          updateTime();
         }
-        showModal("Zurückgesetzt", "<p>Statistiken und Einstellungen wurden gelöscht.</p>");
-      }
+      }, 1000);
+    }
+
+    function stopTimer(){
+      running = false;
+      startPauseBtn.textContent = '▶ Start';
+      clearInterval(interval);
+      interval = null;
+    }
+
+    function resetTimer(){
+      stopTimer();
+      remaining = 600;
+      updateTime();
+    }
+
+    function setDone(day, val){
+      if (val) doneSet.add(day); else doneSet.delete(day);
+      saveProgress();
+      renderCalendar();
+      updateStatusTag(day);
+    }
+
+    function updateStatusTag(day){
+      const done = doneSet.has(day);
+      statusTag.textContent = done ? 'Erledigt' : 'Nicht erledigt';
+      doneToggleBtn.textContent = done ? '↩️ Als nicht erledigt markieren' : '✅ Als erledigt markieren';
+    }
+
+    function openModal(day){
+      currentDay = day;
+      const entry = plan[day];
+      dayTag.textContent = `Tag ${day}`;
+      typeTag.textContent = entry.type === 'meditation' ? 'Meditation' : 'Workout';
+      titleEl.textContent = entry.title;
+      listTitle.textContent = `${entry.type === 'meditation' ? 'Anleitung' : 'Ablauf'} – ${entry.scheme}`;
+      itemsEl.innerHTML = '';
+      entry.items.forEach(it=>{
+        const li = document.createElement('li');
+        li.textContent = it;
+        itemsEl.appendChild(li);
+      });
+      updateStatusTag(day);
+      resetTimer();
+      modal.classList.add('show');
+    }
+
+    function closeModal(){
+      modal.classList.remove('show');
+      stopTimer();
+    }
+
+    document.getElementById('startPause').addEventListener('click', ()=>{
+      if (running) stopTimer(); else startTimer();
+    });
+    document.getElementById('reset').addEventListener('click', resetTimer);
+    document.getElementById('doneToggle').addEventListener('click', ()=> setDone(currentDay, !doneSet.has(currentDay)));
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
+
+    previewToggle.addEventListener('change', ()=>{
+      // nur visuelle Rückmeldung
+      if (previewToggle.checked) tooltip(previewToggle.closest('.tag'), "Vorschau aktiv – alle Türchen öffnbar");
     });
 
-    // Bericht als JSON
-    document.getElementById('downloadReport').addEventListener('click', ()=>{
-      const data = loadStats();
-      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'typing_stats.json';
-      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    });
-    
-    // Initialen Coin-Stand und Multiplikator laden und anzeigen
-    window.addEventListener('load', ()=>{
-        const stats = loadStats();
-        document.getElementById('coins').textContent = formatNumber(stats.coins);
-        document.getElementById('multiplierDisplay').textContent = `x${stats.multiplier || 1}`;
-        document.getElementById('display')?.focus();
-    });
+    /************* Kleine UI-Effekte *************/
+    function shake(el){
+      el.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-6px)' },
+        { transform: 'translateX(6px)' },
+        { transform: 'translateX(0)' }
+      ], { duration: 300, easing: 'ease-in-out' });
+    }
+
+    function tooltip(el, text){
+      const t = document.createElement('div');
+      t.textContent = text;
+      Object.assign(t.style, {
+        position:'absolute', zIndex: 20,
+        background:'rgba(0,0,0,.7)', color:'#fff',
+        padding:'.35rem .55rem', borderRadius:'8px',
+        border:'1px solid rgba(255,255,255,.2)',
+        fontSize:'.85rem',
+        transform:'translateY(-8px)',
+        pointerEvents:'none'
+      });
+      el.style.position = 'relative';
+      el.appendChild(t);
+      setTimeout(()=> t.remove(), 1600);
+    }
+
+    // Schnee generieren
+    function spawnSnow(){
+      const container = document.querySelector('.snow');
+      const N = 80;
+      for (let i=0;i<N;i++){
+        const span = document.createElement('span');
+        span.className = 'flake';
+        span.textContent = Math.random() < .5 ? '❆' : '❄';
+        const size = 12 + Math.random()*14;
+        const startLeft = Math.random() * 100; // vw
+        const duration = 6 + Math.random()*10;
+        const delay = Math.random() * -duration;
+        const xMove = (-40 + Math.random()*80) + 'vw';
+        Object.assign(span.style, {
+          left: startLeft + 'vw',
+          fontSize: size + 'px',
+          animationDuration: duration + 's',
+          animationDelay: delay + 's',
+          '--x-move': xMove
+        });
+        container.appendChild(span);
+      }
+    }
+
+    // Init
+    renderCalendar();
+    spawnSnow();
+    updateTime();
   </script>
 </body>
 </html>
