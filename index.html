@@ -1,832 +1,1557 @@
 <!DOCTYPE html>
+
+
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Fitness Adventskalender – 24 Türchen</title>
-
-  <!-- Festliche Google-Fonts (optional, funktioniert auch ohne Internet mit Fallback) -->
-  https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Nunito:wght@400;700;900&display=swap
-
+  <meta charset="UTF-8">
+  <title>Tutorpower Studentenverteiler by Sven</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
-    :root{
-      --bg: #0b1b2a;
-      --snow: #dff4ff;
-      --cream: #fff8e1;
-      --red: #c62828;
-      --green:#2e7d32;
-      --gold:#f5d15f;
-      --dark: #0a1824;
-      --card: #123047;
+    :root {
+      --bg: #101010;
+      --bg-card: #1b1b1b;
+      --bg-card-soft: #181818;
+      --border-soft: #2a2a2a;
+      --text: #f5f5f5;
+      --text-muted: #aaaaaa;
+      --accent: #ff9800;
+      --accent-soft: rgba(255, 152, 0, 0.2);
+      --danger: #ff5252;
+      --danger-soft: rgba(255, 82, 82, 0.15);
+      --success: #6ddf6d;
+      --success-soft: rgba(109, 223, 109, 0.12);
     }
 
-    *{ box-sizing:border-box; }
-    html, body { height:100%; }
-    body{
-      margin:0;
-      background:
-        radial-gradient(1200px 800px at 20% -10%, #123a57 0%, var(--bg) 60%),
-        radial-gradient(1400px 900px at 120% 10%, #0e2740 0%, var(--bg) 60%),
-        var(--bg);
-      color:#eef7ff;
-      font-family: "Nunito", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
-      overflow-x:hidden;
-    }
 
-    header{
-      text-align:center;
-      padding:2.2rem 1rem 1rem;
-      position:relative;
-    }
-    header h1{
-      font-family: "Mountains of Christmas", "Nunito", cursive;
-      font-size: clamp(2rem, 4vw + 1rem, 3.2rem);
-      color: var(--gold);
-      text-shadow: 0 2px 0 rgba(0,0,0,.3), 0 0 18px rgba(245,209,95,.25);
-      margin: 0 0 .2rem 0;
-    }
-    header p{
-      margin:.2rem auto 0;
-      max-width: 800px;
-      color: #d7ebff;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    /* Lichterkette */
-    .lights{
-      --size: 12px;
-      width:100%;
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      padding:10px 0 0;
-      filter: drop-shadow(0 4px 4px rgba(0,0,0,.35));
-      flex-wrap:wrap;
-    }
-    .bulb{
-      width: var(--size);
-      height: calc(var(--size) * 1.4);
-      background: var(--gold);
-      border-radius: 50% 50% 45% 45%;
-      position: relative;
-      animation: glow 1.8s infinite ease-in-out;
-    }
-    .bulb::before{
-      content:"";
-      position:absolute; top:-6px; left:50%; transform:translateX(-50%);
-      width: 10px; height: 6px; background:#333; border-radius:2px;
-    }
-    .bulb:nth-child(3n+1){ background:#ff5a5a; animation-delay:.1s; }
-    .bulb:nth-child(3n+2){ background:#67ff75; animation-delay:.3s; }
-    .bulb:nth-child(3n){ background:#5fd7ff; animation-delay:.5s; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #202020 0, #050505 60%);
+  color: var(--text);
+}
 
-    @keyframes glow{
-      0%,100% { box-shadow: 0 0 8px 2px rgba(255,255,255,.25); opacity: .9; }
-      50%     { box-shadow: 0 0 18px 6px currentColor; opacity: 1; }
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
 
-    /* Toolbar */
-    .toolbar{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:1rem;
-      margin:1rem auto 0;
-      padding:.6rem 1rem;
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.12);
-      border-radius: 12px;
-      max-width: 1000px;
-    }
-    .toolbar label{
-      display:flex; align-items:center; gap:.5rem; user-select:none;
-    }
-    .tag{
-      display:inline-flex; align-items:center; gap:.4rem;
-      font-size:.9rem; padding:.25rem .5rem; border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-    }
+h1, h2, h3 {
+  margin-top: 0;
+  font-weight: 600;
+}
 
-    /* Kalender */
-    .calendar{
-      max-width: 1200px;
-      margin: 1.2rem auto 4rem;
-      padding: 0 1rem 2rem;
-      display:grid;
-      grid-template-columns: repeat(6, minmax(120px, 1fr));
-      gap: 14px;
-    }
-    @media (max-width: 900px){
-      .calendar{ grid-template-columns: repeat(4, minmax(120px, 1fr)); }
-    }
-    @media (max-width: 620px){
-      .calendar{ grid-template-columns: repeat(3, minmax(100px, 1fr)); }
-    }
+h1 {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-    .door{
-      position:relative;
-      height: 160px;
-      perspective: 800px;
-      border-radius: 14px;
-    }
-    .panel{
-      position:absolute; inset:0;
-      background:
-        radial-gradient(120% 90% at 50% -30%, rgba(255,255,255,.14), transparent 60%),
-        conic-gradient(from 0deg at 40% 10%, rgba(255,255,255,.06), transparent 25%),
-        linear-gradient(145deg, #194665, #0f2b41 60%, #0a2438);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.35);
-      border-radius:14px;
-      transition: transform .6s cubic-bezier(.2,.7,.2,1), filter .2s;
-      transform-origin: left center;
-      overflow:hidden;
-      cursor:pointer;
-    }
-    .panel:hover{ filter: brightness(1.05); }
-    .door.opened .panel{ transform: rotateY(-35deg); }
+h1 span.logo-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
 
-    .door .number{
-      position:absolute; top:8px; left:10px;
-      font-weight:900;
-      color: var(--gold);
-      text-shadow: 0 1px 0 rgba(0,0,0,.4), 0 0 10px rgba(245,209,95,.25);
-      font-size: 1.2rem;
-      letter-spacing: .5px;
-      display:flex; align-items:center; gap:.35rem;
-    }
+.step-indicator {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0 8px;
+  flex-wrap: wrap;
+}
 
-    .wreath{
-      position:absolute; inset: 14px;
-      border-radius:12px;
-      border: 2px dashed rgba(255,255,255,.12);
-      pointer-events:none;
-    }
+.step-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--bg-card-soft);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border: 1px solid transparent;
+}
 
-    .badge{
-      position:absolute; bottom:8px; right:8px;
-      background: linear-gradient(180deg, #1b5e20, #0f3e14);
-      color: #d8ffd3;
-      border: 1px solid rgba(0,0,0,.35);
-      border-radius: 999px;
-      padding: .25rem .5rem;
-      font-size: .8rem;
-      display:inline-flex; align-items:center; gap:.35rem;
-    }
-    .badge svg{ width:16px; height:16px; }
+.step-pill.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
 
-    .door.meditation .badge{
-      background: linear-gradient(180deg, #6a1b9a, #4a126c);
-      color: #f5e9ff;
-    }
+.step-pill-number {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+}
 
-    .door.done .badge{
-      background: linear-gradient(180deg, #b28704, #8a6803);
-      color: #fff7dc;
-    }
+.card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 18px 35px rgba(0,0,0,0.55);
+  margin-bottom: 14px;
+}
 
-    /* Moderner Schnee */
-    .snow{
-      pointer-events:none;
-      position:fixed; inset:0;
-      overflow:hidden;
-      z-index:0;
-    }
-    .flake{
-      position:absolute; top:-10px;
-      color: var(--snow);
-      opacity: .8;
-      animation: fall linear infinite;
-      will-change: transform, opacity;
-      filter: drop-shadow(0 2px 2px rgba(255,255,255,.3));
-    }
-    @keyframes fall{
-      to { transform: translate(var(--x-move), 110vh) rotate(360deg); opacity: .95; }
-    }
+label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+}
 
-    /* Modal */
-    .modal{
-      position: fixed; inset: 0;
-      background: rgba(4, 12, 22, .65);
-      display:none;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      z-index: 10;
-      backdrop-filter: blur(3px);
-    }
-    .modal.show{ display:flex; }
-    .sheet{
-      width: min(860px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.16);
-      box-shadow: 0 20px 50px rgba(0,0,0,.5);
-      border-radius: 16px;
-      padding: 1rem;
-      position:relative;
-    }
-    .sheet header{
-      padding: .5rem 3rem .5rem .5rem;
-      text-align:left;
-    }
-    .sheet header h2{
-      margin:.3rem 0 0; color: var(--gold);
-      font-family: "Mountains of Christmas", "Nunito", cursive;
-      text-shadow: 0 1px 0 rgba(0,0,0,.35), 0 0 10px rgba(245,209,95,.2);
-    }
-    .sheet .content{
-      display:grid;
-      gap: 1rem;
-      grid-template-columns: 1.1fr .9fr;
-    }
-    @media (max-width: 820px){ .sheet .content{ grid-template-columns: 1fr; } }
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-soft);
+  background: #111;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+}
 
-    .list{
-      background: rgba(0,0,0,.18);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px;
-      padding: .75rem .9rem;
-    }
-    .list h3{
-      margin:.2rem 0 .6rem; color:#cfe9ff;
-      font-size:1rem; letter-spacing:.3px;
-      text-transform:uppercase;
-    }
-    .list ul{ margin:.4rem 0 .2rem 1.1rem; }
-    .list li{ margin:.35rem 0; }
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+  background: #141414;
+}
 
-    .timer{
-      background: rgba(0,0,0,.18);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px;
-      padding: .9rem;
-      display:flex; flex-direction:column; gap:.6rem;
-    }
-    .time{
-      font-variant-numeric: tabular-nums;
-      font-size: clamp(2.2rem, 6vw, 3.2rem);
-      font-weight: 900;
-      color: #e7f5ff;
-      text-align:center;
-      text-shadow: 0 2px 0 rgba(0,0,0,.35);
-    }
-    .controls{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      color:#eaf6ff;
-      padding:.6rem .9rem;
-      border-radius: 10px;
-      cursor:pointer;
-      font-weight:700;
-    }
-    .btn.primary{ background: linear-gradient(180deg, #1b5e20, #0f3e14); border-color: rgba(0,0,0,.4); }
-    .btn.warn{ background: linear-gradient(180deg, #5d120f, #3a0a09); border-color: rgba(0,0,0,.5); }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+input.duplicate,
+textarea.duplicate,
+select.duplicate {
+  border-color: var(--danger);
+  background: rgba(255, 82, 82, 0.08);
+  box-shadow: 0 0 0 1px rgba(255,82,82,0.15);
+}
 
-    .helper{
-      display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; justify-content:center;
-      font-size:.9rem;
-    }
-    .helper .tag{ background: rgba(255,255,255,.08); }
+textarea {
+  min-height: 110px;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
 
-    .close{
-      position:absolute; top:.6rem; right:.6rem;
-      width:38px; height:38px; border-radius:10px;
-      display:grid; place-items:center;
-      background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
-      border:1px solid rgba(255,255,255,.16);
-      cursor:pointer;
-    }
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-    footer{
-      text-align:center;
-      color:#cfe9ff;
-      opacity:.8;
-      padding: 0 1rem 2rem;
-    }
-    footer a{ color: var(--gold); text-decoration:none; }
+.col-3 {
+  flex: 1 1 160px;
+}
 
-    /* Heutiger Tag Highlight (wenn im Dezember) */
-    .today .panel{
-      box-shadow: inset 0 0 0 2px rgba(245,209,95,.6), 0 14px 34px rgba(245,209,95,.12), 0 0 30px rgba(245,209,95,.15);
-      animation: breathe 2.5s ease-in-out infinite;
-    }
-    @keyframes breathe {
-      0%,100% { filter: brightness(1); }
-      50% { filter: brightness(1.08); }
-    }
+.col-4 {
+  flex: 1 1 220px;
+}
+
+.col-6 {
+  flex: 1 1 320px;
+}
+
+.col-12 {
+  flex: 1 1 100%;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+button {
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, transform 0.05s, box-shadow 0.15s, border-color 0.15s, opacity 0.15s;
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #050505;
+  box-shadow: 0 8px 18px rgba(255,152,0,0.35);
+  font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #ffb74d;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid rgba(255,82,82,0.65);
+  color: #ffb3b3;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(255,82,82,0.12);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--bg-card-soft);
+  color: var(--text-muted);
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+th, td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-soft);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: #151515;
+}
+
+tr:nth-child(even) td {
+  background: #141414;
+}
+
+.tag-header {
+  font-size: 0.9rem;
+  margin: 4px 0 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+.tag-chip span.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.warning {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,82,82,0.6);
+  background: rgba(255,82,82,0.08);
+  color: #ffb3b3;
+  font-size: 0.85rem;
+}
+
+.success {
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(109,223,109,0.45);
+  background: var(--success-soft);
+  color: #c7ffc7;
+  font-size: 0.85rem;
+}
+
+.subtle {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.pill strong {
+  color: var(--accent);
+}
+
+.unassigned {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.unassigned ul {
+  margin: 4px 0 0 18px;
+  padding: 0;
+}
+
+.unassigned li {
+  margin: 1px 0;
+}
+
+.table-wrapper {
+  max-height: 380px;
+  overflow: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+}
+
+.muted-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.sticky-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.sticky-footer > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.final-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.days-config-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.day-config {
+  background: #161616;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.day-config-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.day-config-title {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+.student-grid {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, minmax(80px, 110px)) 80px;
+  gap: 8px;
+  align-items: end;
+}
+
+.student-row {
+  background: #151515;
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.student-row.duplicate-row {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.student-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.student-row-title {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.student-list-header {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(3, minmax(80px, 110px)) 80px;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  padding: 0 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.small-btn {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.student-card {
+  background: #151515;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.student-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.student-name {
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.student-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 0.76rem;
+}
+
+.mini-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  background: #111;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.arrow-btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.arrow-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255,152,0,0.06);
+}
+
+.day-block {
+  margin-top: 12px;
+  padding-top: 4px;
+}
+
+.empty-state {
+  border: 1px dashed var(--border-soft);
+  border-radius: 12px;
+  padding: 18px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.summary-chip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: #141414;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.summary-chip strong {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .student-grid,
+  .student-list-header {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .student-grid > div:last-child,
+  .student-list-header > div:last-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .card {
+    padding: 14px 12px 16px;
+  }
+
+  th, td {
+    padding: 5px 6px;
+  }
+
+  .student-grid,
+  .student-list-header {
+    grid-template-columns: 1fr;
+  }
+
+  .student-grid > div:last-child,
+  .student-list-header > div:last-child {
+    grid-column: span 1;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .section {
+    display: none !important;
+  }
+
+  #step3 {
+    display: block !important;
+    box-shadow: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .card {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+}
+
   </style>
 </head>
 <body>
-  <div class="snow" aria-hidden="true"></div>
-
-  <header>
-    <h1>Fitness Adventskalender</h1>
-    <p>24 Türchen – jeden Tag 10‑Minuten‑Workout um den Lebkuchen zu verdauen. An ausgewählten Tagen 10‑Minuten‑Meditation. Viel Freude und Protein wünscht Sven! 🎅✨</p>
-    <div class="lights" aria-hidden="true">
-      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
-      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
-      <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+<div class="container">
+  <h1><span class="logo-dot"></span> Random-Platzverteilung für mehrere Tage</h1>
+  <div class="step-indicator">
+    <div class="step-pill" id="step-pill-1">
+      <span class="step-pill-number">1</span>
+      <span>Tage & Namen</span>
     </div>
-    <div class="toolbar">
-      <label class="tag">
-        <input type="checkbox" id="previewToggle" />
-        Vorschau-Modus (alle Türchen öffnbar)
-      </label>
-      <span class="tag" title="Meditations-Tage: aktive Erholung">
-        🕊️ Meditations-Tage enthalten
-      </span>
-      <span class="tag" title="Dein Fortschritt wird lokal gespeichert">
-        ✅ Fortschritt wird gespeichert
-      </span>
+    <div class="step-pill" id="step-pill-2">
+      <span class="step-pill-number">2</span>
+      <span>Karten & Reihenfolge</span>
     </div>
-  </header>
-
-  <main class="calendar" id="calendar" aria-label="Adventskalender mit 24 Türchen"></main>
-
-  <!-- Modal -->
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Tagesplan">
-    <div class="sheet">
-      <button class="close" id="closeModal" aria-label="Schließen">
-        ✖
-      </button>
-      <header>
-        <div class="helper">
-          <span class="tag" id="dayTag">Tag 1</span>
-          <span class="tag" id="typeTag">Workout</span>
-          <span class="tag" id="statusTag">Nicht erledigt</span>
-        </div>
-        <h2 id="title">Titel</h2>
-      </header>
-      <div class="content">
-        <section class="list">
-          <h3 id="listTitle">Ablauf (10 Minuten)</h3>
-          <ul id="items"></ul>
-        </section>
-        <aside class="timer">
-          <div class="time" id="time">10:00</div>
-          <div class="controls">
-            <button class="btn primary" id="startPause">▶ Start</button>
-            <button class="btn" id="reset">↺ Reset</button>
-            <button class="btn" id="doneToggle">✅ Als erledigt markieren</button>
-          </div>
-          <div class="helper">
-            <span class="tag">⏱️ Standard: 10:00</span>
-            <span class="tag">🔊 Signal bei 0:00</span>
-            <span class="tag">💡 Tipp: Wasser bereitstellen</span>
-          </div>
-        </aside>
-      </div>
+    <div class="step-pill" id="step-pill-3">
+      <span class="step-pill-number">3</span>
+      <span>Finale Tabelle & Export</span>
     </div>
   </div>
 
-  <footer>
-    <p>🎁 Tipp: Viel Proteinlebkuchen und Freude beim Training, Beste grüße Sven !</p>
-  </footer>
 
-  <script>
-    /************* Daten *************/
-    const meditationDays = [4, 8, 12, 16, 20, 24]; // Pausen-/Meditations-Tage
+  <section class="section active" id="step1">
+    <div class="card">
+      <h2>1. Tage, Plätze und Namen</h2>
+      <div class="row">
+        <div class="col-4">
+          <label for="dayCount">Anzahl der Tage</label>
+          <input type="number" id="dayCount" min="1" value="2">
+          <div class="hint">Du kannst beliebig viele Tage anlegen.</div>
+        </div>
+        <div class="col-4" style="display:flex;align-items:end;">
+          <button class="btn-secondary" id="btnApplyDayCount">Tage übernehmen</button>
+        </div>
+      </div>
 
-    // Hilfsfunktionen für Inhalte:
-    const makeWorkout = (title, exercises, scheme = "5 Übungen × 2 Runden (je 60s)") => ({
-      type: "workout",
-      title,
-      scheme,
-      items: exercises
-    });
 
-    const makeMeditation = (title, steps) => ({
-      type: "meditation",
-      title,
-      scheme: "10 Minuten Achtsamkeit",
-      items: steps
-    });
+  <div class="days-config-wrap" id="daysConfigWrap"></div>
 
-    // 24 Tage: 18 Workouts + 6 Meditationen
-    const plan = {
-      1:  makeWorkout("Ganzkörper-Kickstart", [
-        "Jumping Jacks (Low Impact: Step Jacks)",
-        "Kniebeugen",
-        "Liegestütze (optional auf Knien)",
-        "Ausfallschritte im Wechsel",
-        "Unterarmstütz (Plank)"
-      ]),
-      2:  makeWorkout("Core & Haltung", [
-        "Dead Bug",
-        "Glute Bridge",
-        "Bicycle Crunches",
-        "Bird Dog",
-        "Seitstütz (links/rechts halbieren)"
-      ]),
-      3:  makeWorkout("Cardio Light", [
-        "High Knees (Low Impact: March)",
-        "Skater",
-        "Bergsteiger (Mountain Climbers)",
-        "Kniebeugen-Impulse",
-        "Armkreisen im Ausfallschritt"
-      ]),
-      4:  makeMeditation("Atempause – Box Breathing", [
-        "Finde eine bequeme Sitzposition",
-        "2′ Einchecken: Körperwahrnehmung",
-        "3′ Box Breathing: 4s ein, 4s halten, 4s aus, 4s halten",
-        "3′ Body Scan von Kopf bis Fuß",
-        "2′ Dankbarkeit: 3 Dinge benennen"
-      ]),
-      5:  makeWorkout("Unterkörper Fokus", [
-        "Kniebeugen",
-        "Seitliche Ausfallschritte",
-        "Wandsitz",
-        "Wadenheben",
-        "Hip Hinge (Good Mornings)"
-      ]),
-      6:  makeWorkout("Oberkörper & Core", [
-        "Liegestütze (Varianten erlaubt)",
-        "Superman",
-        "Trizeps-Dips am Stuhl",
-        "Plank mit Shoulder Taps",
-        "Russian Twists"
-      ]),
-      7:  makeWorkout("Mobility Flow", [
-        "Cat–Cow",
-        "World’s Greatest Stretch (rechts/links)",
-        "Achsel-Öffner im Kniestand",
-        "Hüftbeuger-Stretch",
-        "Vorbeuge mit Schulter-Mobilisation"
-      ], "Flow – langsam & bewusst (2 Runden je 60s)"),
-      8:  makeMeditation("Kerzenmeditation (Tratak)", [
-        "Sitze aufrecht, Kerze auf Augenhöhe (oder imaginäre Kerze)",
-        "2′ Blick weich auf die Flamme richten",
-        "3′ Atem natürlich fließen lassen, Wandern der Gedanken bemerken",
-        "3′ Augen schließen: Nachbild beobachten",
-        "2′ Sanft zurückkommen, Augen öffnen"
-      ]),
-      9:  makeWorkout("HIIT Basic (Low/High Mix)", [
-        "Burpees (Low Impact: halbe Burpees)",
-        "Kniebeugen-Sprünge (oder schnelle Kniebeugen)",
-        "Bergsteiger",
-        "Skater",
-        "Plank Jacks (oder statischer Plank)"
-      ]),
-      10: makeWorkout("Rumpf-Stabil", [
-        "Hohes Brett (Plank) – 60s",
-        "Seitstütz links – 60s",
-        "Seitstütz rechts – 60s",
-        "Rückenstrecker („Schwimmer“)",
-        "Hollow Hold / Dead Bug"
-      ]),
-      11: makeWorkout("Beine & Po", [
-        "Ausfallschritte rückwärts",
-        "Hip Bridge (mit Pause oben)",
-        "Sumo Squats",
-        "Step-Ups (Stufe/Stuhl, vorsichtig!)",
-        "Donkey Kicks"
-      ]),
-      12: makeMeditation("Body Scan kurz & klar", [
-        "Bequem hinlegen oder setzen",
-        "2′ Atem spüren, Bauch hebt/senkt",
-        "2′ Füße/Beine scannen",
-        "3′ Becken/Brust/Schultern scannen",
-        "3′ Kopf/Gesicht, dann Gesamtwahrnehmung"
-      ]),
-      13: makeWorkout("Cardio & Core Mix", [
-        "Jumping Jacks",
-        "Bicycle Crunches",
-        "Kniehebelauf",
-        "Russian Twists",
-        "Bergsteiger"
-      ]),
-      14: makeWorkout("Push & Pull zuhause", [
-        "Liegestütze",
-        "Tisch-Rudern (unter stabilen Tisch, Vorsicht!) / oder Theraband",
-        "Trizeps-Dips",
-        "Superman (mit Armheben)",
-        "Plank mit langsamen Shoulder Taps"
-      ]),
-      15: makeWorkout("Gelenkfreundlich (Low Impact)", [
-        "Step Jacks",
-        "Squat to Chair (auf Stuhl absetzen)",
-        "Wall Push-Ups",
-        "March + Armzüge",
-        "Seitliches Tippen + Mini-Kniebeuge"
-      ], "5 Übungen × 2 Runden (je 60s, sanft)"),
-      16: makeMeditation("4‑7‑8 Atemtechnik", [
-        "Aufrecht sitzen, Schultern entspannen",
-        "1′ Einchecken",
-        "5′ Atem: 4s ein – 7s halten – 8s aus (ruhig, komfortabel)",
-        "3′ Still sitzen, Atem frei fließen lassen",
-        "1′ Sanft re‑orientieren"
-      ]),
-      17: makeWorkout("Athletik Ganzkörper", [
-        "Inchworm Walkouts",
-        "Seitliche Ausfallschritte",
-        "Liegestütze",
-        "Kniebeugen-Sprünge (oder schnell)",
-        "Plank mit Beinheben"
-      ]),
-      18: makeWorkout("Core Rotation", [
-        "Russian Twists",
-        "Seitstütz-Heben (links)",
-        "Seitstütz-Heben (rechts)",
-        "Fahrrad-Crunches",
-        "Hollow Hold / Dead Bug"
-      ]),
-      19: makeWorkout("Mobil & stark", [
-        "World’s Greatest Stretch",
-        "Hip Bridge",
-        "Good Mornings",
-        "T-Spine Rotation im Vierfüßler",
-        "Plank mit langsamen Gewichtsverlagerungen"
-      ]),
-      20: makeMeditation("Loving Kindness (Metta)", [
-        "Bequem sitzen, Herzraum wahrnehmen",
-        "2′ Atem beruhigen",
-        "3′ Wünsche an dich: „Möge ich sicher/gesund/zufrieden sein“",
-        "3′ Wünsche an andere Menschen",
-        "2′ Nachspüren: Wärme/Weite im Brustraum"
-      ]),
-      21: makeWorkout("Beine & Balance", [
-        "Einbein-Kniebeugen zum Stuhl (abwechseln)",
-        "Seitlicher Step + Kniehebelauf",
-        "Calf Raises (Wadenheben, langsam)",
-        "Seitstütz-Knie zur Brust (links/rechts)",
-        "Wall Sit"
-      ]),
-      22: makeWorkout("Oberkörper kompakt", [
-        "Liegestütze eng (Trizeps-Fokus, modifizierbar)",
-        "Pike Push-Ups (oder Schulterdrücken mit Band)",
-        "Tisch-Rudern / Zugvariante",
-        "Reverse Snow Angels (Bauchlage)",
-        "Plank Up-Downs"
-      ]),
-      23: makeWorkout("X‑Mas Sweat 🎁", [
-        "Burpees (oder halbe Burpees)",
-        "Skater",
-        "Kniebeugen schnell",
-        "Bergsteiger",
-        "Jumping Jacks"
-      ]),
-      24: makeMeditation("Heiligabend – Ruhe & Dankbarkeit", [
-        "2′ Ankommen & Atem wahrnehmen",
-        "3′ Dankbarkeit: 3–5 Momente aus diesem Advent",
-        "3′ Body Scan leicht & freundlich",
-        "2′ Vorsatz: eine kleine gute Tat"
-      ]),
-    };
+  <div style="margin-top:16px;">
+    <div class="student-row-head">
+      <div>
+        <div class="student-row-title">Namen zuerst separat eintragen</div>
+        <div class="hint">Namen werden als eigenes Feld erfasst. So werden keine Namen vom Algorithmus verschluckt.</div>
+      </div>
+      <button class="btn-secondary small-btn" id="btnAddStudent">+ Person hinzufügen</button>
+    </div>
 
-    /************* Kalender-Aufbau *************/
-    const calendarEl = document.getElementById('calendar');
-    const modal = document.getElementById('modal');
-    const closeModalBtn = document.getElementById('closeModal');
-    const previewToggle = document.getElementById('previewToggle');
+    <div class="student-list-header" id="studentListHeader"></div>
+    <div id="studentRows"></div>
+  </div>
 
-    // Fortschritt (localStorage)
-    const LS_KEY = 'fitness_advent_done_v1';
-    const doneSet = new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]'));
+  <div id="duplicateWarningBox"></div>
 
-    function saveProgress(){
-      localStorage.setItem(LS_KEY, JSON.stringify([...doneSet]));
+  <div class="btn-row">
+    <button class="btn-primary" id="btnDistribute">⚡ Auf Tage verteilen</button>
+  </div>
+</div>
+
+  </section>
+
+
+  <section class="section" id="step2">
+    <div class="card">
+      <h2>2. Kartenansicht und Reihenfolge</h2>
+      <div class="summary-strip" id="step2Summary"></div>
+      <div id="dayCardBlocks"></div>
+
+
+  <div class="sticky-footer">
+    <div>
+      <button class="btn-ghost" id="btnBackToSetup">&larr; Zurück zu Eingaben</button>
+    </div>
+    <div>
+      <button class="btn-primary" id="btnToFinal">Weiter zur Tabelle &rarr;</button>
+    </div>
+  </div>
+</div>
+
+  </section>
+
+
+  <section class="section" id="step3">
+    <div class="card">
+      <h2>3. Finale Tabelle & Export</h2>
+      <div id="finalWarnings"></div>
+
+
+  <div class="table-wrapper" style="margin-top:8px;">
+    <table id="finalTable">
+      <thead>
+      <tr>
+        <th>Tag</th>
+        <th>Datum</th>
+        <th>Platz</th>
+        <th>Name</th>
+        <th>Präferenz</th>
+      </tr>
+      </thead>
+      <tbody id="finalTableBody"></tbody>
+    </table>
+  </div>
+
+  <p class="final-note">
+    Export als TXT erstellt eine einfache Textdatei mit allen Tagen und Plätzen.
+  </p>
+
+  <div class="sticky-footer no-print">
+    <div>
+      <button class="btn-ghost" id="btnBackToCards">&larr; Zurück zu Karten</button>
+    </div>
+    <div>
+      <button class="btn-secondary" id="btnExportTxt">💾 Als TXT exportieren</button>
+      <button class="btn-primary" id="btnPrint">🖨️ Drucken / PDF</button>
+    </div>
+  </div>
+</div>
+
+  </section>
+</div>
+
+
+<script>
+  const appState = {
+    days: [],
+    students: [],
+    assignmentsByDay: {},
+    unassigned: [],
+    finalList: []
+  };
+
+  function showStep(step) {
+    for (let i = 1; i <= 3; i++) {
+      const section = document.getElementById("step" + i);
+      const pill = document.getElementById("step-pill-" + i);
+      if (section) section.classList.toggle("active", i === step);
+      if (pill) pill.classList.toggle("active", i === step);
     }
+  }
 
-    // Ist Türchen laut Datum offen? (Dezember-Logik)
-    function isUnlockedByDate(day){
-      const now = new Date();
-      const month = now.getMonth(); // 0 = Jan, 11 = Dez
-      const date = now.getDate();
-      // Nur im Dezember beschränken – ansonsten frei (oder via Vorschau)
-      if (month !== 11) return true;
-      return date >= day;
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function shuffle(array) {
+    const arr = array.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+    return arr;
+  }
 
-    function dayIsMeditation(day){ return meditationDays.includes(day); }
+  function getDefaultDays(count) {
+    const safeCount = Math.max(1, parseInt(count, 10) || 1);
+    const existing = Array.isArray(appState.days) ? appState.days : [];
+    const days = [];
+    for (let i = 1; i <= safeCount; i++) {
+      const found = existing.find(d => d.id === i);
+      days.push({
+        id: i,
+        label: found?.label || `Tag ${i}`,
+        date: found?.date || "",
+        capacity: Number.isFinite(found?.capacity) ? found.capacity : 12
+      });
+    }
+    return days;
+  }
 
-    function createDoor(day){
-      const d = document.createElement('div');
-      d.className = 'door' + (dayIsMeditation(day) ? ' meditation' : '');
-      if (doneSet.has(day)) d.classList.add('done');
+  function renderDayConfigs() {
+    const wrap = document.getElementById("daysConfigWrap");
+    wrap.innerHTML = "";
 
-      // Heutiger Tag markieren (nur im Dezember)
-      const now = new Date();
-      if (now.getMonth() === 11 && now.getDate() === day){
-        d.classList.add('today');
-      }
-
-      // Struktur
-      d.innerHTML = `
-        <div class="panel" role="button" aria-label="Türchen ${day} öffnen" tabindex="0">
-          <div class="number">Tag ${day}</div>
-          <div class="wreath" aria-hidden="true"></div>
-          <div class="badge">
-            ${dayIsMeditation(day) ? '🕊️ Meditation' : '💪 Workout'}
+    appState.days.forEach(day => {
+      const box = document.createElement("div");
+      box.className = "day-config";
+      box.innerHTML = `
+        <div class="day-config-header">
+          <div class="day-config-title">${escapeHtml(day.label)}</div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label for="day-label-${day.id}">Name des Tages</label>
+            <input type="text" id="day-label-${day.id}" class="day-label-input" data-day-id="${day.id}" value="${escapeHtml(day.label)}">
+          </div>
+          <div class="col-6">
+            <label for="day-date-${day.id}">Datum</label>
+            <input type="date" id="day-date-${day.id}" class="day-date-input" data-day-id="${day.id}" value="${escapeHtml(day.date)}">
+          </div>
+          <div class="col-6">
+            <label for="day-cap-${day.id}">Plätze</label>
+            <input type="number" min="0" id="day-cap-${day.id}" class="day-cap-input" data-day-id="${day.id}" value="${escapeHtml(day.capacity)}">
           </div>
         </div>
       `;
+      wrap.appendChild(box);
+    });
+  }
 
-      const panel = d.querySelector('.panel');
-      const canOpen = () => previewToggle.checked || isUnlockedByDate(day);
+  function buildStudentHeader() {
+    const header = document.getElementById("studentListHeader");
+    header.innerHTML = "";
+    const cols = [`<div>Name</div>`];
+    appState.days.forEach(day => {
+      cols.push(`<div>${escapeHtml(day.label)}<br><span class="subtle">0 / 1 / 2</span></div>`);
+    });
+    cols.push(`<div>Aktion</div>`);
+    header.innerHTML = cols.join("");
+  }
 
-      const open = () => {
-        if (!canOpen()){
-          shake(panel);
-          tooltip(panel, "Noch nicht freigeschaltet (außer Vorschau)");
-          return;
-        }
-        d.classList.add('opened');
-        openModal(day);
+  function createStudent(prefMap) {
+    const obj = {
+      id: cryptoRandomId(),
+      name: "",
+      preferences: {}
+    };
+    appState.days.forEach(day => {
+      obj.preferences[day.id] = Number.isFinite(prefMap?.[day.id]) ? prefMap[day.id] : 0;
+    });
+    return obj;
+  }
+
+  function syncStudentPreferencesToDays() {
+    appState.students = appState.students.map(student => {
+      const nextPrefs = {};
+      appState.days.forEach(day => {
+        nextPrefs[day.id] = normalizePreference(student.preferences?.[day.id]);
+      });
+      return {
+        ...student,
+        preferences: nextPrefs
       };
+    });
+  }
 
-      panel.addEventListener('click', open);
-      panel.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
+  function normalizePreference(value) {
+    const n = parseInt(value, 10);
+    if (n === 1 || n === 2) return n;
+    return 0;
+  }
 
-      return d;
+  function cryptoRandomId() {
+    return "id-" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+
+  function renderStudentRows() {
+    buildStudentHeader();
+    const wrap = document.getElementById("studentRows");
+    wrap.innerHTML = "";
+
+    if (!appState.students.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = "Noch keine Personen eingetragen.";
+      wrap.appendChild(empty);
+      renderDuplicateWarnings([]);
+      return;
     }
 
-    function renderCalendar(){
-      calendarEl.innerHTML = '';
-      for (let day=1; day<=24; day++){
-        calendarEl.appendChild(createDoor(day));
+    const duplicateNames = getDuplicateNames();
+    appState.students.forEach((student, index) => {
+      const isDuplicate = duplicateNames.has(normalizeName(student.name));
+      const row = document.createElement("div");
+      row.className = "student-row" + (isDuplicate ? " duplicate-row" : "");
+      const fields = [];
+
+      fields.push(`
+        <div>
+          <label>Name</label>
+          <input type="text" class="student-name-input ${isDuplicate ? "duplicate" : ""}" data-student-id="${student.id}" value="${escapeHtml(student.name)}" placeholder="Name eingeben">
+        </div>
+      `);
+
+      appState.days.forEach(day => {
+        fields.push(`
+          <div>
+            <label>${escapeHtml(day.label)}</label>
+            <select class="student-pref-input" data-student-id="${student.id}" data-day-id="${day.id}">
+              <option value="0"${normalizePreference(student.preferences[day.id]) === 0 ? " selected" : ""}>0</option>
+              <option value="1"${normalizePreference(student.preferences[day.id]) === 1 ? " selected" : ""}>1</option>
+              <option value="2"${normalizePreference(student.preferences[day.id]) === 2 ? " selected" : ""}>2</option>
+            </select>
+          </div>
+        `);
+      });
+
+      fields.push(`
+        <div>
+          <label>&nbsp;</label>
+          <button class="btn-danger small-btn btn-delete-student" data-student-id="${student.id}">Löschen</button>
+        </div>
+      `);
+
+      row.innerHTML = `
+        <div class="student-row-head">
+          <div class="student-row-title">Person ${index + 1}</div>
+        </div>
+        <div class="student-grid">
+          ${fields.join("")}
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+
+    renderDuplicateWarnings([...duplicateNames].filter(Boolean));
+  }
+
+  function getDuplicateNames() {
+    const counts = new Map();
+    appState.students.forEach(student => {
+      const key = normalizeName(student.name);
+      if (!key) return;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    const duplicates = new Set();
+    counts.forEach((count, key) => {
+      if (count > 1) duplicates.add(key);
+    });
+    return duplicates;
+  }
+
+  function normalizeName(name) {
+    return String(name || "").trim().toLocaleLowerCase("de");
+  }
+
+  function renderDuplicateWarnings(duplicateKeys) {
+    const box = document.getElementById("duplicateWarningBox");
+    box.innerHTML = "";
+    if (!duplicateKeys.length) return;
+
+    const names = duplicateKeys
+      .map(key => {
+        const original = appState.students.find(s => normalizeName(s.name) === key)?.name || key;
+        return escapeHtml(original);
+      })
+      .sort((a, b) => a.localeCompare(b, "de"));
+
+    const div = document.createElement("div");
+    div.className = "warning";
+    div.innerHTML = `
+      <div><strong>Doppelte Namen gefunden:</strong> ${names.join(", ")}</div>
+      <div style="margin-top:4px;">Doppelte Einträge sind rot markiert. Bitte prüfen, bevor verteilt wird.</div>
+    `;
+    box.appendChild(div);
+  }
+
+  function readDaysFromUI() {
+    appState.days = appState.days.map(day => {
+      const labelInput = document.querySelector(`.day-label-input[data-day-id="${day.id}"]`);
+      const dateInput = document.querySelector(`.day-date-input[data-day-id="${day.id}"]`);
+      const capInput = document.querySelector(`.day-cap-input[data-day-id="${day.id}"]`);
+      const label = (labelInput?.value || "").trim() || `Tag ${day.id}`;
+      const date = dateInput?.value || "";
+      const capacity = Math.max(0, parseInt(capInput?.value, 10) || 0);
+      return {
+        ...day,
+        label,
+        date,
+        capacity
+      };
+    });
+    syncStudentPreferencesToDays();
+    renderDayConfigs();
+    renderStudentRows();
+  }
+
+  function applyDayCount() {
+    const count = Math.max(1, parseInt(document.getElementById("dayCount").value, 10) || 1);
+    appState.days = getDefaultDays(count);
+    syncStudentPreferencesToDays();
+    renderDayConfigs();
+    renderStudentRows();
+  }
+
+  function addStudent(prefMap) {
+    appState.students.push(createStudent(prefMap));
+    renderStudentRows();
+  }
+
+  function deleteStudent(studentId) {
+    appState.students = appState.students.filter(s => s.id !== studentId);
+    renderStudentRows();
+  }
+
+  function updateStudentName(studentId, value) {
+    const student = appState.students.find(s => s.id === studentId);
+    if (!student) return;
+    student.name = value;
+    renderStudentRows();
+  }
+
+  function updateStudentPreference(studentId, dayId, value) {
+    const student = appState.students.find(s => s.id === studentId);
+    if (!student) return;
+    student.preferences[dayId] = normalizePreference(value);
+  }
+
+  function validateBeforeDistribution() {
+    readDaysFromUI();
+
+    if (!appState.days.length) {
+      alert("Bitte mindestens einen Tag anlegen.");
+      return false;
+    }
+
+    const namedStudents = appState.students.filter(s => (s.name || "").trim() !== "");
+    if (!namedStudents.length) {
+      alert("Bitte mindestens eine Person mit Namen eintragen.");
+      return false;
+    }
+
+    const duplicateNames = getDuplicateNames();
+    if (duplicateNames.size > 0) {
+      alert("Es gibt doppelte Namen. Bitte prüfen.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function distributeStudents() {
+    if (!validateBeforeDistribution()) return;
+
+    const students = appState.students
+      .filter(s => (s.name || "").trim() !== "")
+      .map(s => ({
+        id: s.id,
+        name: s.name.trim(),
+        preferences: { ...s.preferences }
+      }));
+
+    const days = appState.days.map(day => ({
+      ...day,
+      assigned: []
+    }));
+
+    const dayMap = new Map(days.map(day => [day.id, day]));
+
+    const byPriority = {
+      2: new Map(),
+      1: new Map(),
+      0: []
+    };
+
+    days.forEach(day => {
+      byPriority[2].set(day.id, []);
+      byPriority[1].set(day.id, []);
+    });
+
+    students.forEach(student => {
+      let maxPref = 0;
+      appState.days.forEach(day => {
+        const p = normalizePreference(student.preferences[day.id]);
+        if (p > maxPref) maxPref = p;
+      });
+
+      if (maxPref === 0) {
+        byPriority[0].push(student);
+        return;
       }
-    }
 
-    /************* Modal & Timer *************/
-    const dayTag = document.getElementById('dayTag');
-    const typeTag = document.getElementById('typeTag');
-    const statusTag = document.getElementById('statusTag');
-    const titleEl = document.getElementById('title');
-    const listTitle = document.getElementById('listTitle');
-    const itemsEl = document.getElementById('items');
+      const preferredDays = appState.days
+        .filter(day => normalizePreference(student.preferences[day.id]) === maxPref)
+        .map(day => day.id);
 
-    const timeEl = document.getElementById('time');
-    const startPauseBtn = document.getElementById('startPause');
-    const resetBtn = document.getElementById('reset');
-    const doneToggleBtn = document.getElementById('doneToggle');
+      const chosenDayId = preferredDays[Math.floor(Math.random() * preferredDays.length)];
+      byPriority[maxPref].get(chosenDayId).push(student);
+    });
 
-    let currentDay = 1;
-    let remaining = 600; // Sekunden
-    let running = false;
-    let interval = null;
+    days.forEach(day => day.assigned = []);
 
-    function fmt(t){
-      const m = Math.floor(t/60).toString().padStart(2,'0');
-      const s = (t%60).toString().padStart(2,'0');
-      return `${m}:${s}`;
-    }
-    function updateTime(){
-      timeEl.textContent = fmt(remaining);
-    }
+    [2, 1].forEach(priority => {
+      days.forEach(day => {
+        const target = byPriority[priority].get(day.id) || [];
+        const remainingCapacity = Math.max(0, day.capacity - day.assigned.length);
 
-    function beep(){
-      try{
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.26);
-      } catch(e){}
-    }
-
-    function startTimer(){
-      if (running) return;
-      running = true;
-      startPauseBtn.textContent = '⏸ Pause';
-      interval = setInterval(()=>{
-        remaining--;
-        if (remaining <= 0){
-          remaining = 0;
-          stopTimer();
-          updateTime();
-          beep();
+        if (target.length <= remainingCapacity) {
+          shuffle(target).forEach(student => {
+            day.assigned.push({
+              ...student,
+              assignedDayId: day.id,
+              assignedBy: "priority",
+              matchedPriority: priority
+            });
+          });
         } else {
-          updateTime();
+          const randomized = shuffle(target);
+          const keepHere = randomized.slice(0, remainingCapacity);
+          const overflow = randomized.slice(remainingCapacity);
+
+          keepHere.forEach(student => {
+            day.assigned.push({
+              ...student,
+              assignedDayId: day.id,
+              assignedBy: "priority",
+              matchedPriority: priority
+            });
+          });
+
+          shuffle(overflow).forEach(student => {
+            const alternatives = getAssignableDaysForStudent(student, days, day.id);
+            if (alternatives.length) {
+              const chosenAlt = alternatives[Math.floor(Math.random() * alternatives.length)];
+              chosenAlt.assigned.push({
+                ...student,
+                assignedDayId: chosenAlt.id,
+                assignedBy: "overflow",
+                matchedPriority: priority
+              });
+            }
+          });
         }
-      }, 1000);
-    }
-
-    function stopTimer(){
-      running = false;
-      startPauseBtn.textContent = '▶ Start';
-      clearInterval(interval);
-      interval = null;
-    }
-
-    function resetTimer(){
-      stopTimer();
-      remaining = 600;
-      updateTime();
-    }
-
-    function setDone(day, val){
-      if (val) doneSet.add(day); else doneSet.delete(day);
-      saveProgress();
-      renderCalendar();
-      updateStatusTag(day);
-    }
-
-    function updateStatusTag(day){
-      const done = doneSet.has(day);
-      statusTag.textContent = done ? 'Erledigt' : 'Nicht erledigt';
-      doneToggleBtn.textContent = done ? '↩️ Als nicht erledigt markieren' : '✅ Als erledigt markieren';
-    }
-
-    function openModal(day){
-      currentDay = day;
-      const entry = plan[day];
-      dayTag.textContent = `Tag ${day}`;
-      typeTag.textContent = entry.type === 'meditation' ? 'Meditation' : 'Workout';
-      titleEl.textContent = entry.title;
-      listTitle.textContent = `${entry.type === 'meditation' ? 'Anleitung' : 'Ablauf'} – ${entry.scheme}`;
-      itemsEl.innerHTML = '';
-      entry.items.forEach(it=>{
-        const li = document.createElement('li');
-        li.textContent = it;
-        itemsEl.appendChild(li);
       });
-      updateStatusTag(day);
-      resetTimer();
-      modal.classList.add('show');
-    }
-
-    function closeModal(){
-      modal.classList.remove('show');
-      stopTimer();
-    }
-
-    document.getElementById('startPause').addEventListener('click', ()=>{
-      if (running) stopTimer(); else startTimer();
-    });
-    document.getElementById('reset').addEventListener('click', resetTimer);
-    document.getElementById('doneToggle').addEventListener('click', ()=> setDone(currentDay, !doneSet.has(currentDay)));
-    closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
-
-    previewToggle.addEventListener('change', ()=>{
-      // nur visuelle Rückmeldung
-      if (previewToggle.checked) tooltip(previewToggle.closest('.tag'), "Vorschau aktiv – alle Türchen öffnbar");
     });
 
-    /************* Kleine UI-Effekte *************/
-    function shake(el){
-      el.animate([
-        { transform: 'translateX(0)' },
-        { transform: 'translateX(-6px)' },
-        { transform: 'translateX(6px)' },
-        { transform: 'translateX(0)' }
-      ], { duration: 300, easing: 'ease-in-out' });
-    }
+    const stillAssignedIds = new Set(days.flatMap(day => day.assigned.map(s => s.id)));
+    const zeroPriorityPool = byPriority[0].filter(s => !stillAssignedIds.has(s.id));
+    const afterOverflowUnplacedPriorityStudents = students.filter(s => {
+      const maxPref = Math.max(...appState.days.map(day => normalizePreference(s.preferences[day.id])));
+      return maxPref > 0 && !stillAssignedIds.has(s.id);
+    });
 
-    function tooltip(el, text){
-      const t = document.createElement('div');
-      t.textContent = text;
-      Object.assign(t.style, {
-        position:'absolute', zIndex: 20,
-        background:'rgba(0,0,0,.7)', color:'#fff',
-        padding:'.35rem .55rem', borderRadius:'8px',
-        border:'1px solid rgba(255,255,255,.2)',
-        fontSize:'.85rem',
-        transform:'translateY(-8px)',
-        pointerEvents:'none'
-      });
-      el.style.position = 'relative';
-      el.appendChild(t);
-      setTimeout(()=> t.remove(), 1600);
-    }
+    const remainingPool = shuffle([...zeroPriorityPool, ...afterOverflowUnplacedPriorityStudents]);
 
-    // Schnee generieren
-    function spawnSnow(){
-      const container = document.querySelector('.snow');
-      const N = 80;
-      for (let i=0;i<N;i++){
-        const span = document.createElement('span');
-        span.className = 'flake';
-        span.textContent = Math.random() < .5 ? '❆' : '❄';
-        const size = 12 + Math.random()*14;
-        const startLeft = Math.random() * 100; // vw
-        const duration = 6 + Math.random()*10;
-        const delay = Math.random() * -duration;
-        const xMove = (-40 + Math.random()*80) + 'vw';
-        Object.assign(span.style, {
-          left: startLeft + 'vw',
-          fontSize: size + 'px',
-          animationDuration: duration + 's',
-          animationDelay: delay + 's',
-          '--x-move': xMove
+    remainingPool.forEach(student => {
+      const candidates = days
+        .filter(day => day.assigned.length < day.capacity)
+        .sort((a, b) => {
+          const remainingA = a.capacity - a.assigned.length;
+          const remainingB = b.capacity - b.assigned.length;
+          if (remainingB !== remainingA) return remainingB - remainingA;
+          return a.id - b.id;
         });
-        container.appendChild(span);
+
+      if (candidates.length) {
+        const chosen = candidates[0];
+        const bestPref = normalizePreference(student.preferences[chosen.id]);
+        chosen.assigned.push({
+          ...student,
+          assignedDayId: chosen.id,
+          assignedBy: bestPref > 0 ? "overflow-fill" : "zero-priority",
+          matchedPriority: bestPref
+        });
       }
+    });
+
+    const assignedIds = new Set(days.flatMap(day => day.assigned.map(s => s.id)));
+    const unassigned = students.filter(s => !assignedIds.has(s.id)).map(s => ({
+      ...s,
+      assignedDayId: 0,
+      assignedBy: "unassigned",
+      matchedPriority: 0
+    }));
+
+    days.forEach(day => {
+      day.assigned = day.assigned.map((student, index) => ({
+        ...student,
+        order: index + 1
+      }));
+    });
+
+    appState.assignmentsByDay = {};
+    days.forEach(day => {
+      appState.assignmentsByDay[day.id] = day.assigned;
+    });
+    appState.unassigned = unassigned;
+
+    renderCardsView();
+    showStep(2);
+  }
+
+  function getAssignableDaysForStudent(student, days, excludedDayId) {
+    const preferredPositive = days.filter(day => normalizePreference(student.preferences[day.id]) > 0 && day.id !== excludedDayId && day.assigned.length < day.capacity);
+    if (preferredPositive.length) return preferredPositive;
+    return days.filter(day => day.id !== excludedDayId && day.assigned.length < day.capacity);
+  }
+
+  function renderCardsView() {
+    const summary = document.getElementById("step2Summary");
+    summary.innerHTML = "";
+
+    appState.days.forEach(day => {
+      const assigned = appState.assignmentsByDay[day.id] || [];
+      const chip = document.createElement("div");
+      chip.className = "summary-chip";
+      chip.innerHTML = `<strong>${escapeHtml(day.label)}</strong> · ${assigned.length} / ${day.capacity}`;
+      summary.appendChild(chip);
+    });
+
+    if (appState.unassigned.length) {
+      const chip = document.createElement("div");
+      chip.className = "summary-chip";
+      chip.innerHTML = `<strong>Nicht zugeordnet</strong> · ${appState.unassigned.length}`;
+      summary.appendChild(chip);
     }
 
-    // Init
-    renderCalendar();
-    spawnSnow();
-    updateTime();
-  </script>
+    const wrap = document.getElementById("dayCardBlocks");
+    wrap.innerHTML = "";
+
+    appState.days.forEach(day => {
+      const assigned = appState.assignmentsByDay[day.id] || [];
+      const block = document.createElement("div");
+      block.className = "day-block";
+
+      const header = document.createElement("div");
+      header.className = "tag-header";
+      header.innerHTML = `
+        <div>
+          <div class="tag-chip"><span class="dot"></span>${escapeHtml(day.label)}</div>
+          <div class="hint">${day.date ? escapeHtml(day.date) + " · " : ""}${assigned.length} / ${day.capacity} Plätze belegt</div>
+        </div>
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn-secondary small-btn btn-shuffle-day" data-day-id="${day.id}">Reihenfolge mischen</button>
+        </div>
+      `;
+      block.appendChild(header);
+
+      if (!assigned.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "Für diesen Tag ist aktuell niemand zugeordnet.";
+        block.appendChild(empty);
+      } else {
+        const cards = document.createElement("div");
+        cards.className = "cards-grid";
+
+        assigned.forEach((student, index) => {
+          const currentPref = normalizePreference(student.preferences[day.id]);
+          const card = document.createElement("div");
+          card.className = "student-card";
+          card.innerHTML = `
+            <div class="student-card-head">
+              <div>
+                <div class="student-name">${escapeHtml(student.name)}</div>
+                <div class="student-meta">
+                  <span class="mini-pill">Platz ${index + 1}</span>
+                  <span class="mini-pill">Präferenz hier: ${currentPref}</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="arrow-btn btn-move-up" data-day-id="${day.id}" data-index="${index}" title="Nach oben">↑</button>
+              <button class="arrow-btn btn-move-down" data-day-id="${day.id}" data-index="${index}" title="Nach unten">↓</button>
+            </div>
+          `;
+          cards.appendChild(card);
+        });
+
+        block.appendChild(cards);
+      }
+
+      wrap.appendChild(block);
+    });
+
+    if (appState.unassigned.length) {
+      const box = document.createElement("div");
+      box.className = "warning";
+      box.innerHTML = `
+        <div><strong>Nicht zugeordnet:</strong></div>
+        <div style="margin-top:6px;">${appState.unassigned.map(s => escapeHtml(s.name)).join(", ")}</div>
+      `;
+      wrap.appendChild(box);
+    }
+  }
+
+  function moveCard(dayId, index, direction) {
+    const arr = appState.assignmentsByDay[dayId];
+    if (!Array.isArray(arr)) return;
+    const nextIndex = index + direction;
+    if (nextIndex < 0 || nextIndex >= arr.length) return;
+    [arr[index], arr[nextIndex]] = [arr[nextIndex], arr[index]];
+    arr.forEach((item, i) => item.order = i + 1);
+    renderCardsView();
+  }
+
+  function shuffleDayOrder(dayId) {
+    const arr = appState.assignmentsByDay[dayId];
+    if (!Array.isArray(arr) || arr.length < 2) return;
+    appState.assignmentsByDay[dayId] = shuffle(arr).map((item, i) => ({
+      ...item,
+      order: i + 1
+    }));
+    renderCardsView();
+  }
+
+  function buildFinalList() {
+    const finalList = [];
+    appState.days.forEach(day => {
+      const assigned = (appState.assignmentsByDay[day.id] || []).slice();
+      assigned.forEach((student, index) => {
+        finalList.push({
+          dayId: day.id,
+          dayLabel: day.label,
+          date: day.date,
+          seat: index + 1,
+          name: student.name,
+          preferenceForAssignedDay: normalizePreference(student.preferences[day.id]),
+          preferences: { ...student.preferences }
+        });
+      });
+    });
+
+    appState.unassigned.forEach(student => {
+      finalList.push({
+        dayId: 0,
+        dayLabel: "Nicht zugeordnet",
+        date: "",
+        seat: "",
+        name: student.name,
+        preferenceForAssignedDay: 0,
+        preferences: { ...student.preferences }
+      });
+    });
+
+    appState.finalList = finalList;
+    renderFinalTable();
+    showStep(3);
+  }
+
+  function renderFinalTable() {
+    const tbody = document.getElementById("finalTableBody");
+    tbody.innerHTML = "";
+
+    const warnings = [];
+    appState.days.forEach(day => {
+      const count = (appState.assignmentsByDay[day.id] || []).length;
+      if (count > day.capacity) {
+        warnings.push(`${day.label} hat ${count} Personen, aber nur ${day.capacity} Plätze.`);
+      }
+    });
+    if (appState.unassigned.length) {
+      warnings.push(`${appState.unassigned.length} Person(en) konnten keinem Tag zugeordnet werden.`);
+    }
+
+    const warnBox = document.getElementById("finalWarnings");
+    warnBox.innerHTML = "";
+    if (warnings.length) {
+      const div = document.createElement("div");
+      div.className = "warning";
+      div.innerHTML = warnings.map(w => `<div>${escapeHtml(w)}</div>`).join("");
+      warnBox.appendChild(div);
+    } else {
+      const div = document.createElement("div");
+      div.className = "success";
+      div.textContent = "Alle Personen wurden erfolgreich verteilt.";
+      warnBox.appendChild(div);
+    }
+
+    appState.finalList.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${escapeHtml(item.dayLabel)}</td>
+        <td>${escapeHtml(item.date || "")}</td>
+        <td>${escapeHtml(item.seat || "")}</td>
+        <td>${escapeHtml(item.name)}</td>
+        <td>${escapeHtml(item.preferenceForAssignedDay)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function exportTxt() {
+    if (!appState.finalList.length) {
+      alert("Keine finale Liste zum Export vorhanden.");
+      return;
+    }
+
+    const lines = [];
+    appState.days.forEach(day => {
+      lines.push(`${day.label}${day.date ? " (" + day.date + ")" : ""}`);
+      lines.push("-".repeat(Math.max(12, day.label.length + (day.date ? day.date.length + 3 : 0))));
+      const assigned = appState.finalList.filter(item => item.dayId === day.id);
+      if (!assigned.length) {
+        lines.push("Keine Personen zugeordnet.");
+      } else {
+        assigned.forEach(item => {
+          lines.push(`${item.seat}. ${item.name} [Präferenz hier: ${item.preferenceForAssignedDay}]`);
+        });
+      }
+      lines.push("");
+    });
+
+    const unassigned = appState.finalList.filter(item => item.dayId === 0);
+    if (unassigned.length) {
+      lines.push("Nicht zugeordnet");
+      lines.push("---------------");
+      unassigned.forEach(item => {
+        lines.push(item.name);
+      });
+      lines.push("");
+    }
+
+    const txt = lines.join("\n");
+    const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "platzverteilung.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  document.addEventListener("input", (e) => {
+    if (e.target.classList.contains("day-label-input") || e.target.classList.contains("day-date-input") || e.target.classList.contains("day-cap-input")) {
+      readDaysFromUI();
+      return;
+    }
+
+    if (e.target.classList.contains("student-name-input")) {
+      updateStudentName(e.target.dataset.studentId, e.target.value);
+      return;
+    }
+  });
+
+  document.addEventListener("change", (e) => {
+    if (e.target.classList.contains("student-pref-input")) {
+      const studentId = e.target.dataset.studentId;
+      const dayId = parseInt(e.target.dataset.dayId, 10);
+      updateStudentPreference(studentId, dayId, e.target.value);
+      return;
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const deleteBtn = e.target.closest(".btn-delete-student");
+    if (deleteBtn) {
+      deleteStudent(deleteBtn.dataset.studentId);
+      return;
+    }
+
+    const moveUp = e.target.closest(".btn-move-up");
+    if (moveUp) {
+      moveCard(parseInt(moveUp.dataset.dayId, 10), parseInt(moveUp.dataset.index, 10), -1);
+      return;
+    }
+
+    const moveDown = e.target.closest(".btn-move-down");
+    if (moveDown) {
+      moveCard(parseInt(moveDown.dataset.dayId, 10), parseInt(moveDown.dataset.index, 10), 1);
+      return;
+    }
+
+    const shuffleBtn = e.target.closest(".btn-shuffle-day");
+    if (shuffleBtn) {
+      shuffleDayOrder(parseInt(shuffleBtn.dataset.dayId, 10));
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    appState.days = getDefaultDays(2);
+    appState.students = [createStudent(), createStudent()];
+    renderDayConfigs();
+    renderStudentRows();
+
+    document.getElementById("btnApplyDayCount").addEventListener("click", applyDayCount);
+    document.getElementById("btnAddStudent").addEventListener("click", () => addStudent());
+    document.getElementById("btnDistribute").addEventListener("click", distributeStudents);
+    document.getElementById("btnBackToSetup").addEventListener("click", () => showStep(1));
+    document.getElementById("btnToFinal").addEventListener("click", buildFinalList);
+    document.getElementById("btnBackToCards").addEventListener("click", () => showStep(2));
+    document.getElementById("btnExportTxt").addEventListener("click", exportTxt);
+    document.getElementById("btnPrint").addEventListener("click", () => window.print());
+  });
+</script>
+
+
 </body>
 </html>
